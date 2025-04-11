@@ -122,7 +122,7 @@ authentication [
         }
 
         connect_timeout = "3s"
-    }
+    },
     {
         backend = "built_in_database"
         mechanism = "password_based"
