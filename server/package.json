@@ -11,7 +11,7 @@
     "start": "bun run src/server.ts",
     "start:prod": "bun run dist/server.js",
     "migrate": "bun run src/db/migrate.ts",
-    "setup:prod": "cross-env NODE_ENV=production build:prod && bun migrate"
+    "setup:prod": "cross-env NODE_ENV=production bun build:prod && bun migrate"
   },
   "devDependencies": {
     "@types/bun": "latest",

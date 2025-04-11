@@ -5,7 +5,7 @@
     },
     "deploy": {
       "sleepApplication": true,
-      "startCommand": "bun run start:prod"
+      "startCommand": "bun start:prod"
     }
   }
   
