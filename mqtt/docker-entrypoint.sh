@@ -102,7 +102,8 @@ telemetry {
     enabled = false
 }
 
-authentication [
+authentication {
+  mechanisms = [
     {
         mechanism = password_based
         backend = http
@@ -132,7 +133,8 @@ authentication [
         }
         user_id_type = "username"
     }
-]
+  ]
+}
 EOF
 
 
