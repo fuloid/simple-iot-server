@@ -25,8 +25,8 @@ RUN set -eu; \
     rm -f $pkg; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -R /opt/emqx/log && \
-    mkdir -R /opt/emqx/data && \
+RUN mkdir -p /opt/emqx/log && \
+    mkdir -p /opt/emqx/data && \
     chown -R emqx:emqx /opt/emqx/log && \
     chown -R emqx:emqx /opt/emqx/data
 
