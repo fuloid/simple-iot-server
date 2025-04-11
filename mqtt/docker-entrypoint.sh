@@ -60,18 +60,30 @@ export EMQX_RPC__PORT_DISCOVERY="${EMQX_RPC__PORT_DISCOVERY:-manual}"
 : "${MQTT_SECRET_KEY:?Missing MQTT_SECRET_KEY}"
 : "${MQTT_ADMIN_PASSWORD:?Missing MQTT_ADMIN_PASSWORD}"
 
+# Set EMQX dashboard admin password
 export EMQX_DASHBOARD__DEFAULT_USER__PASSWORD="${MQTT_ADMIN_PASSWORD}"
 
 # Build the final EMQX auth URL
 AUTH_URL="http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
 
-# Patch the EMQX HTTP auth config
-cat <<EOF > /opt/emqx/etc/plugins/emqx_auth_http.conf
-auth.http.auth_req.method = post
-auth.http.auth_req.url = ${AUTH_URL}
-auth.http.auth_req.headers.content-type = application/json
-auth.http.auth_req.body = {"username": "\${username}", "password": "\${password}", "token": "${MQTT_SECRET_KEY}"}
-auth.http.auth_req.timeout = 2s
+# Write EMQX v5 HTTP authentication config in YAML format
+cat <<EOF > /opt/emqx/etc/emqx_authn_http.yaml
+authn:
+  - name: http_auth
+    mechanism: password_based
+    backend: http
+    enable: true
+    method: post
+    url: ${AUTH_URL}
+    body:
+      username: "\${username}"
+      password: "\${password}"
+      token: "${MQTT_SECRET_KEY}"
+    headers:
+      Content-Type: application/json
 EOF
+
+# Let EMQX know where to find the auth config
+export EMQX_AUTHN__CONFIG=/opt/emqx/etc/emqx_authn_http.yaml
 
 exec "$@"
