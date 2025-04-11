@@ -104,8 +104,8 @@ telemetry {
 
 authentication {
     http_post {
-        mechanism = password_based
-        backend = http
+        mechanism = "password_based"
+        backend = "http"
 
         method = post
         url = "http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
