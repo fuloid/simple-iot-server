@@ -7,10 +7,10 @@
   "scripts": {
     "dev": "bun run --watch src/server.ts",
     "build": "bun build server.ts --outdir=dist",
-    "build:prod": "cross-env NODE_ENV=production bun build server.ts --outdir=dist --minify",
+    "build:prod": "cross-env NODE_ENV=production bun build server.ts --outdir=dist --minify --target=bun",
     "start": "bun run src/server.ts",
     "start:prod": "bun run dist/server.js",
-    "migrate": "bun run src/db/migrate.ts",
+    "migrate": "bun drizzle-kit migrate",
     "setup:prod": "cross-env NODE_ENV=production bun install && bun build:prod && bun migrate"
   },
   "devDependencies": {
