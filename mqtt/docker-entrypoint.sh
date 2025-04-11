@@ -102,8 +102,7 @@ telemetry {
     enabled = false
 }
 
-authentication {
-    {
+authentication.1 = {
         mechanism = "password_based"
         backend = "http"
 
@@ -122,9 +121,9 @@ authentication {
         }
 
         connect_timeout = "3s"
-    },
+}
 
-    {
+authentication.2 = {
         backend = "built_in_database"
         mechanism = "password_based"
         password_hash_algorithm {
@@ -132,7 +131,6 @@ authentication {
             salt_position = "suffix"
         }
         user_id_type = "username"
-    }
 }
 EOF
 
