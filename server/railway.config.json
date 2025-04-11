@@ -1,0 +1,11 @@
+{
+    "$schema": "https://railway.com/railway.schema.json",
+    "build": {
+      "buildCommand": "bun setup:prod"
+    },
+    "deploy": {
+      "sleepApplication": true,
+      "startCommand": "bun run start:prod"
+    }
+  }
+  

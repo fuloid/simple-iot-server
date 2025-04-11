@@ -1,0 +1,37 @@
+{
+  "name": "sm-server",
+  "description": "Simple IoT server for managing and monitoring smart module devices.",
+  "version": "0.0.1",
+  "author": "Realzzy",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch src/server.ts",
+    "build": "bun build server.ts --outdir=dist",
+    "build:prod": "cross-env NODE_ENV=production bun build server.ts --outdir=dist --minify",
+    "start": "bun run src/server.ts",
+    "start:prod": "bun run dist/server.js",
+    "migrate": "bun run src/db/migrate.ts",
+    "setup:prod": "cross-env NODE_ENV=production build:prod && bun migrate"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/pg": "^8.11.11",
+    "bun-types": "^1.2.9",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "drizzle-kit": "^0.30.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.41.0",
+    "hono": "^4.7.6",
+    "hono-rate-limiter": "^0.4.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.14.1",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
+  }
+}
