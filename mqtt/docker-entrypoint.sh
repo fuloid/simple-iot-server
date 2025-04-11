@@ -99,7 +99,7 @@ dashboard {
 }
 
 telemetry {
-    enabled = false
+    enable = false
 }
 
 authentication.1 = {
