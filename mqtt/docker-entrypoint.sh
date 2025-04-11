@@ -70,34 +70,54 @@ AUTH_URL="http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
 : "${MQTT_SECRET_KEY:?Missing MQTT_SECRET_KEY}"
 : "${MQTT_ADMIN_PASSWORD:?Missing MQTT_ADMIN_PASSWORD}"
 
-# Patch EMQX dashboard default password
-cat <<EOF > /opt/emqx/etc/emqx_dash.conf
+# Patch EMQX configuration
+cat <<EOF > /opt/emqx/etc/emqx.conf
+node {
+  name = "emqx@127.0.0.1"
+  cookie = "emqxsecretcookie"
+  data_dir = "data"
+}
+
+cluster {
+  name = emqxcl
+  discovery_strategy = manual
+}
+
 dashboard {
+  listeners {
+    http {
+      bind = 18083
+    }
+    https {
+      bind = 18084
+      ssl_options {
+        certfile = "\${EMQX_ETC_DIR}/certs/cert.pem"
+        keyfile = "\${EMQX_ETC_DIR}/certs/key.pem"
+      }
+    }
+  }
+
   default_password = "${MQTT_ADMIN_PASSWORD}"
 }
-EOF
 
-# Patch EMQX HTTP auth config
-cat <<EOF > /opt/emqx/etc/emqx_authn.conf
 authentication {
-  mechanism = "password_based"
-  backend = "http"
-
   http_post {
-    url = "http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth?clientid=\${clientid}"
+    mechanism = password_based
+    backend = http
+
+    method = post
+    url = "http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
+
+    body {
+      username = "\${username}"
+      password = "\${password}"
+      token = "${MQTT_SECRET_KEY}"
+    }
 
     headers {
       "Content-Type" = "application/json"
       "X-Request-Source" = "EMQX"
     }
-
-    body = '''
-    {
-      "username": "\${username}",
-      "password": "\${password}",
-      "token": "${MQTT_SECRET_KEY}"
-    }
-    '''
 
     timeout = "2s"
   }
