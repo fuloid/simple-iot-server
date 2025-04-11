@@ -48,4 +48,4 @@ COPY docker-entrypoint.sh /usr/bin/
 
 ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
 
-CMD ["/opt/emqx/bin/emqx", "foreground"]
+CMD ["echo", "foreground"]
