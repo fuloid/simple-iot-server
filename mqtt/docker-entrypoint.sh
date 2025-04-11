@@ -100,7 +100,7 @@ dashboard {
   default_password = "${MQTT_ADMIN_PASSWORD}"
 }
 
-authentication {
+authentication [
   http_post {
     mechanism = password_based
     backend = http
@@ -121,7 +121,7 @@ authentication {
 
     timeout = "2s"
   }
-}
+]
 EOF
 
 
