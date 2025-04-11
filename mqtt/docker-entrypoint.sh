@@ -103,28 +103,28 @@ telemetry {
 }
 
 authentication [
-  http_post {
-    mechanism = password_based
-    backend = http
+    {
+        mechanism = password_based
+        backend = http
 
-    method = post
-    url = "http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
+        method = post
+        url = "http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
 
-    request {
-        body {
-            username = "\${username}"
-            password = "\${password}"
-            token = "${MQTT_SECRET_KEY}"
+        request {
+            body {
+                username = "\${username}"
+                password = "\${password}"
+                token = "${MQTT_SECRET_KEY}"
+            }
+
+            headers {
+                "Content-Type" = "application/json"
+                "X-Request-Source" = "EMQX"
+            }
         }
 
-        headers {
-            "Content-Type" = "application/json"
-            "X-Request-Source" = "EMQX"
-        }
+        connect_timeout = "3s"
     }
-
-    connect_timeout = "3s"
-  }
 ]
 EOF
 
