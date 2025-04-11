@@ -102,7 +102,7 @@ telemetry {
     enable = false
 }
 
-authentication.1 = {
+authentication.1 {
         mechanism = "password_based"
         backend = "http"
 
@@ -123,7 +123,7 @@ authentication.1 = {
         connect_timeout = "3s"
 }
 
-authentication.2 = {
+authentication.2 {
         backend = "built_in_database"
         mechanism = "password_based"
         password_hash_algorithm {
