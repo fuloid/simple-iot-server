@@ -6,9 +6,7 @@ COPY docker-healthcheck /usr/local/bin/
 
 # Chmod to executable
 RUN chmod +x /usr/bin/docker-entrypoint.sh && \
-    chmod +x /usr/local/bin/docker-healthcheck && \
-    mkdir -p /opt/emqx/logs && \
-    chown -R emqx:emqx /opt/emqx/logs
+    chmod +x /usr/local/bin/docker-healthcheck
 
 HEALTHCHECK CMD ["docker-healthcheck"]
 
