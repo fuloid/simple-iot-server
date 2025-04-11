@@ -32,6 +32,11 @@ RUN mkdir -p /opt/emqx/log && \
 
 WORKDIR /opt/emqx
 
+USER root
+
+COPY docker-entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/docker-entrypoint.sh
+
 USER emqx
 
 # emqx will occupy these port:
@@ -44,8 +49,6 @@ USER emqx
 # - 5369 for backplain gen_rpc
 EXPOSE 1883 18083
 
-COPY docker-entrypoint.sh /usr/bin/
-
 ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
 
-CMD ["echo", "foreground"]
+CMD ["/opt/emqx/bin/emqx", "foreground"]
