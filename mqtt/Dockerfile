@@ -25,11 +25,14 @@ RUN set -eu; \
     rm -f $pkg; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN mkdir -R /opt/emqx/log && \
+    mkdir -R /opt/emqx/data && \
+    chown -R emqx:emqx /opt/emqx/log && \
+    chown -R emqx:emqx /opt/emqx/data
+
 WORKDIR /opt/emqx
 
 USER emqx
-
-VOLUME ["/opt/emqx/log", "/opt/emqx/data"]
 
 # emqx will occupy these port:
 # - 1883 port for MQTT
