@@ -11,7 +11,6 @@ shopt -s nullglob
 
 ## Local IP address setting
 
-LOCAL_IPS=($(hostname --ip-address))
 LOCAL_IP=$(hostname -i | grep -oE '((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])\.){3}(25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])' | head -n 1)
 
 export EMQX_NAME="${EMQX_NAME:-emqx}"
@@ -51,6 +50,7 @@ fi
 # i.e. use port 5369 (or per tcp_server_port | ssl_server_port config) for gen_rpc
 export EMQX_RPC__PORT_DISCOVERY="${EMQX_RPC__PORT_DISCOVERY:-manual}"
 
+
 # Added for configuration
 # Fail if required envs aren't set
 : "${SERVER_HOST:?Missing SERVER_HOST}"
@@ -71,33 +71,5 @@ auth.http.auth_req.headers.content-type = application/json
 auth.http.auth_req.body = {"username": "\${username}", "password": "\${password}", "token": "${MQTT_SECRET_KEY}"}
 auth.http.auth_req.timeout = 2s
 EOF
-
-# Enable the plugin in emqx.conf if needed
-echo "plugins = emqx_auth_http" >> /opt/emqx/etc/emqx.conf
-
-isIPv6() {
-  local colons="${1//[^:]}"
-  test "${#colons}" -gt 1
-}
-
-check() {
-  local host="$1"
-  echo "Checking $host ..."
-  if emqx_ctl status && curl -fsL "http://$host/status"; then
-    echo
-    echo "Service is healthy."
-  	exit 0
-  fi
-  echo "Service is not healthy!"
-  exit 1
-}
-
-if isIPv6 "$LOCAL_IPS"; then
-  endpoint="[$LOCAL_IPS]:$ADMIN_PORT"
-else
-  endpoint="$LOCAL_IPS:$ADMIN_PORT"
-fi
-
-( sleep 15; check "$endpoint") &
 
 exec "$@"
