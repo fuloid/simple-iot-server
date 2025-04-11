@@ -84,20 +84,22 @@ cluster {
 }
 
 dashboard {
-  listeners {
-    http {
-      bind = 18083
+    listeners {
+        http.bind = 18083
+        # https.bind = 18084
+        https {
+            ssl_options {
+                certfile = "${EMQX_ETC_DIR}/certs/cert.pem"
+                keyfile = "${EMQX_ETC_DIR}/certs/key.pem"
+            }
+        }
     }
-    https {
-      bind = 18084
-      ssl_options {
-        certfile = "\${EMQX_ETC_DIR}/certs/cert.pem"
-        keyfile = "\${EMQX_ETC_DIR}/certs/key.pem"
-      }
-    }
-  }
 
-  default_password = "${MQTT_ADMIN_PASSWORD}"
+    default_password = "${MQTT_ADMIN_PASSWORD}"
+}
+
+telemetry {
+    enabled = false
 }
 
 authentication [
@@ -108,18 +110,20 @@ authentication [
     method = post
     url = "http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
 
-    body {
-      username = "\${username}"
-      password = "\${password}"
-      token = "${MQTT_SECRET_KEY}"
+    request {
+        body {
+            username = "\${username}"
+            password = "\${password}"
+            token = "${MQTT_SECRET_KEY}"
+        }
+
+        headers {
+            "Content-Type" = "application/json"
+            "X-Request-Source" = "EMQX"
+        }
     }
 
-    headers {
-      "Content-Type" = "application/json"
-      "X-Request-Source" = "EMQX"
-    }
-
-    timeout = "2s"
+    connect_timeout = "3s"
   }
 ]
 EOF
