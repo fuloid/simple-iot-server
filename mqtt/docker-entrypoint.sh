@@ -103,8 +103,7 @@ telemetry {
 }
 
 authentication {
-  mechanisms = [
-    {
+    http_post {
         mechanism = password_based
         backend = http
 
@@ -123,8 +122,9 @@ authentication {
         }
 
         connect_timeout = "3s"
-    },
-    {
+    }
+
+    default_db {
         backend = "built_in_database"
         mechanism = "password_based"
         password_hash_algorithm {
@@ -133,7 +133,6 @@ authentication {
         }
         user_id_type = "username"
     }
-  ]
 }
 EOF
 
