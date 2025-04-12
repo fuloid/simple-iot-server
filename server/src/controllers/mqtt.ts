@@ -33,8 +33,8 @@ app.post('/auth', async (c) => {
             logger.info('[MQTT] System authentication successful.');
 
             const acl = [
-                { permission: 'allow', action: 'all', topic: `device/#/ping` },
-                { permission: 'allow', action: 'all', topic: `device/#/data` },
+                { permission: 'allow', action: 'all', topic: `device/+/ping` },
+                { permission: 'allow', action: 'all', topic: `device/+/data` },
             ];
 
             setTimeout(() => subscribeTopics(clientid, acl), 500);
@@ -74,18 +74,16 @@ app.post('/auth', async (c) => {
         ];
 
         if (type === 'master') {
-            const agentDevices = await Database.listAgentDevices(uuid);
-            if (agentDevices.length > 0) {
-                for (const agentDeviceId of agentDevices) {
-                    acl.unshift({ permission: 'allow', action: 'all', topic: `device/${agentDeviceId}/ping` });
-                    acl.unshift({ permission: 'allow', action: 'all', topic: `device/${agentDeviceId}/master` });
-                }
+            const agentIds = await Database.listAgentDevices(uuid);
+            for (const agentId of agentIds) {
+                acl.push({ permission: 'allow', action: 'all', topic: `device/${agentId}/ping` });
+                acl.push({ permission: 'allow', action: 'all', topic: `device/${agentId}/master` });
             }
-        } else {
-            const masterDeviceId = await Database.getDeviceMaster(uuid);
-            if (masterDeviceId) {
-                acl.unshift({ permission: 'allow', action: 'all', topic: `device/${uuid}/master` });
-                acl.unshift({ permission: 'allow', action: 'all', topic: `device/${masterDeviceId}/ping` });
+        } else if (type === 'agent') {
+            const masterId = await Database.getDeviceMaster(uuid);
+            if (masterId) {
+                acl.push({ permission: 'allow', action: 'all', topic: `device/${uuid}/master` });
+                acl.push({ permission: 'allow', action: 'all', topic: `device/${masterId}/ping` });
             }
         }
 
