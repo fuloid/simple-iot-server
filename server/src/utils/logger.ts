@@ -45,6 +45,14 @@ function wrap(logger: Logger, level: ValidLogLevel, prefix: string): pino.LogFn 
     
     return function(obj: unknown, ...args: any[]): void {
         if (typeof obj === 'string') {
+            
+            // thx to railway broken logs system, we need to use
+            // some hacks to make sure error obj is logged correctly.
+            if (process.env.NODE_ENV === 'production' && args[1] instanceof Error) {
+                // inject the error message in the message itself.
+                obj = obj + `${args[1].message ?? ''}\n${args[1].stack}`;
+            }
+
             logMethod.call(logger, `[${prefix}] ${obj}`, ...args);
         } else {
             logMethod.call(logger, (obj as any), ...args);
