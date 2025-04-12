@@ -109,8 +109,8 @@ const subscribeTopics = async (clientid: string, acl: { permission: string, acti
         // fetch MQTT_HOST /api/v5/clients/systemctl/subscribe/bulk
         await fetch(`${process.env.MQTT_HOST}/api/v5/clients/${clientid}/subscribe/bulk`, {
             headers: {
-                Authorization: btoa(`systemctl:${process.env.MQTT_SECRET_KEY}`),
-                'Content-Type': 'application/json',
+            Authorization: `Basic ${btoa(`systemctl:${process.env.MQTT_SECRET_KEY}`)}`,
+            'Content-Type': 'application/json',
             },
             method: 'POST',
             body: JSON.stringify(topics),
