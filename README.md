@@ -2,7 +2,7 @@
 
 A (probably) lightweight IoT server implementation for managing and monitoring smart devices with MQTT support.
 
-This codebase includes detailed documentation in the code comments and implementation. Please review the source code carefully to fully understand the architecture and functionality before making any modifications.
+This readme only provides some explanation for the codebase that might be uncompleted. Please review the source code carefully to fully understand the architecture and functionality before making any modifications.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/3Jbbxj?referralCode=4iJO-9)
 
@@ -17,7 +17,7 @@ This is an IoT server that provides:
 - Automatic device reconnection handling
 - Structured logging system with prefixes
 - Database migrations and ORM support
-- Production-ready deployment configurations
+- Deploy-ready deployment configurations
 
 ## Project Structure
 
@@ -39,8 +39,8 @@ This is an IoT server that provides:
 - **MQTT Broker**: [EMQX](https://www.emqx.io)
 - **Database**: PostgreSQL with [Drizzle ORM](https://orm.drizzle.team)
 - **Authentication**: JWT tokens
-- **Deployment**: [Railway](https://railway.app)
 - **Logging**: Pino with pretty printing
+- **Deployment**: [Railway](https://railway.app) (Recommended)
 
 ## Hosting
 
@@ -63,6 +63,7 @@ This is an IoT server that provides:
 
 ### MQTT Topics
 
+**Master devices**<br>
 Master devices can publish/subscribe to:
 ```
 device/{masterUUID}/ping
@@ -73,6 +74,7 @@ and related agent devices
 device/{agentUUID}/master
 ```
 
+**Agent devices**<br>
 Agent devices can publish/subscribe to:
 ```
 device/{agentUUID}/ping
@@ -87,10 +89,8 @@ device/{masterUUID}/master
 - [Drizzle](https://orm.drizzle.team) - Database ORM
 - [Bun](https://bun.sh) - JavaScript Runtime
 
-## License
+## License & Credit
 
-Licensed by Realzzy, do not use without permission.
-
-## Credit
-
-- Readme generated with: [ChatGPT](https://chatgpt.com)
+- Code made by Realzzy, with some code parts are originally from AI (ChatGPT, Claude, etc.).
+- Readme fully generated with: [ChatGPT](https://chatgpt.com)<br>
+(Why? lazy tbh goodluck!)
