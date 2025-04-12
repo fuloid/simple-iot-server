@@ -1,7 +1,8 @@
-import pino, { type Logger } from 'pino';
+import pino from 'pino';
 import pretty from 'pino-pretty';
 
 const logger = pino(pretty());
+export type Logger = pino.Logger & { prefix?: string };
 
 // make logger log info set debug min level
 logger.level = (process.env.DEBUG && Boolean(process.env.DEBUG)) ? 'debug' : 'info';
@@ -10,7 +11,7 @@ logger.debug('Logger initialized with level:', logger.level);
 export function createLogger(prefix: string, customLogger?: Logger) {
     if (customLogger) {
         // get the current prefix from the custom logger
-        const currentPrefix = customLogger.bindings().msgPrefix || '';
+        const currentPrefix = customLogger.prefix || '';
 
         // if exist, extract the prefix from the current logger with match
         // if prefix exist, then make the new prefix `[${prefix} > ${currentPrefix}]`
@@ -23,6 +24,7 @@ export function createLogger(prefix: string, customLogger?: Logger) {
             warn: wrap(customLogger, 'warn', newPrefix),
             error: wrap(customLogger, 'error', newPrefix),
             debug: wrap(customLogger, 'debug', newPrefix),
+            prefix: newPrefix,
         } satisfies Logger;
     }
 
@@ -32,6 +34,7 @@ export function createLogger(prefix: string, customLogger?: Logger) {
         warn: wrap(logger, 'warn', prefix),
         error: wrap(logger, 'error', prefix),
         debug: wrap(logger, 'debug', prefix),
+        prefix,
     } satisfies Logger;
 }
 

@@ -40,6 +40,7 @@ export async function connectMQTT() {
     client = mqtt.connect(process.env.MQTT_HOST!, {
         clientId: generateRandom(12),
         username: 'systemctl',
+        password: process.env.MQTT_SECRET_KEY,
         reconnectPeriod: 0, // disable default retry
         connectTimeout: 5000,
     })
