@@ -114,6 +114,10 @@ authentication = [
             "X-Request-Source" = "EMQX"
         }
 
+        ssl {
+            enable = true
+        }
+
         connect_timeout = "3s"
     },
 
