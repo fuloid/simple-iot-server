@@ -104,7 +104,7 @@ app.post('/auth', async (c) => {
 });
 
 const subscribeTopics = async (clientid: string, acl: { permission: string, action: string, topic: string }[]) => {
-    const topics = acl.filter((item) => item.permission === 'allow' && item.action === 'subscribe').map((item) => ({ topic: item.topic }));
+    const topics = acl.filter((item) => item.permission === 'allow' && (item.action === 'subscribe' || item.action === 'all')).map((item) => ({ topic: item.topic }));
     if (topics.length > 0) {
         // fetch MQTT_HOST /api/v5/clients/systemctl/subscribe/bulk
         await fetch(`${process.env.MQTT_HOST}/api/v5/clients/${clientid}/subscribe/bulk`, {
