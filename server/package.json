@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "bun run --watch src/server.ts",
     "build:dev": "bun build server.ts --sourcemap --outdir=dist",
-    "build:prod": "cross-env NODE_ENV=production bun build server.ts --outfile=dist/server.js --minify --sourcemap --target=bun",
+    "build:prod": "cross-env NODE_ENV=production bun build src/server.ts --outdir=dist --minify --sourcemap --target=bun",
     "build": "bun setup:prod",
     "start:dev": "bun run src/server.ts",
     "start:prod": "bun run dist/server.js",
