@@ -95,44 +95,31 @@ telemetry {
     enable = false
 }
 
-authentication = [
-    {
-        enable = true
-        mechanism = "password_based"
-        backend = "http"
+authentication {
+    enable = true
+    mechanism = "password_based"
+    backend = "http"
 
-        method = post
-        url = "${AUTH_URL}"
+    method = post
+    url = "${AUTH_URL}"
 
-        body {
-            username = "\${username}"
-            password = "\${password}"
-            token = "${MQTT_SECRET_KEY}"
-        }
-
-        headers {
-            "Content-Type" = "application/json"
-            "X-Request-Source" = "EMQX"
-        }
-
-        ssl {
-            enable = true
-        }
-
-        connect_timeout = "3s"
-    },
-
-    {
-        enable = false
-        backend = "built_in_database"
-        mechanism = "password_based"
-        password_hash_algorithm {
-            name = "sha256",
-            salt_position = "suffix"
-        }
-        user_id_type = "username"
+    body {
+        username = "\${username}"
+        password = "\${password}"
+        token = "${MQTT_SECRET_KEY}"
     }
-]
+
+    headers {
+        "Content-Type" = "application/json"
+        "X-Request-Source" = "EMQX"
+    }
+
+    ssl {
+        enable = true
+    }
+
+    connect_timeout = "3s"
+}
 EOF
 
 
