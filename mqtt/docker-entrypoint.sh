@@ -109,6 +109,7 @@ authentication {
     url = "${AUTH_URL}"
 
     body {
+        clientid = "\${clientid}"
         username = "\${username}"
         password = "\${password}"
         token = "${MQTT_SECRET_KEY}"
@@ -127,7 +128,7 @@ authentication {
 }
 
 api_key = {
-  bootstrap_file = "etc/api_key.conf"
+    bootstrap_file = "etc/api_key.conf"
 }
 EOF
 
