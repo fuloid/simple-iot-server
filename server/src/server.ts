@@ -7,7 +7,7 @@ import { rateLimiter } from 'hono-rate-limiter';
 import Token from '@/utils/token';
 import auth from '@/controllers/auth';
 import mqtt from '@/controllers/mqtt';
-import type { BlankEnv } from 'hono/types';
+import { connectMQTT } from './utils/mqtt';
 
 export type HonoContext = { 
     Variables: { 
@@ -63,6 +63,9 @@ app.use('/mqtt', deviceMiddleware);
 // Route mounts
 app.route('/auth', auth);
 app.route('/mqtt', mqtt);
+
+// Initialize mqtt client
+connectMQTT();
 
 // Start Bun server
 serve({

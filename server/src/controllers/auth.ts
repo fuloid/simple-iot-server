@@ -2,9 +2,10 @@
 import { Hono } from 'hono';
 import { Database } from '../utils/database';
 import Token from '../utils/token';
-import logger from '@/utils/logger';
+import { createLogger } from '@/utils/logger';
 
 const app = new Hono();
+const logger = createLogger('Auth');
 
 app.get('/devices/request', async (c) => {
     const uuid = c.req.query('uuid');
@@ -12,7 +13,7 @@ app.get('/devices/request', async (c) => {
     const bearerToken = authHeader.replace('Bearer ', '').trim();
 
     if (!uuid || !bearerToken) {
-        logger.debug('[Auth] Missing UUID or Bearer token in request.');
+        logger.debug('Missing UUID or Bearer token in request.');
         return c.json({ c: 'FORBIDDEN' }, 403);
     }
 
@@ -24,7 +25,7 @@ app.get('/devices/request', async (c) => {
 
     // Simulated auth check - replace this with real logic based on your token/secret
     if (device_type === null) {
-        logger.debug('[Auth] Invalid bearer token');
+        logger.debug('Invalid bearer token');
         return c.json({ c: 'FORBIDDEN' }, 403);
     }
 
@@ -33,7 +34,7 @@ app.get('/devices/request', async (c) => {
         const exists = await Database.getDeviceByUUID(uuid);
         if (!exists) {
             if (!device_type) return c.json({ c: 'ERROR' }, 404);
-            logger.debug('[Auth] Device not found, registering new');
+            logger.debug('Device not found, registering new');
             
             if (device_type === 'master') await Database.registerMasterDevice(uuid);
             else if (device_type === 'agent') await Database.registerAgentDevice(uuid);
@@ -42,14 +43,14 @@ app.get('/devices/request', async (c) => {
 
         const isRegistered = await Database.isDeviceRegistered(uuid);
         if (!isRegistered.result) {
-            logger.debug('[Auth] Device exists but is not registered with ' + (isRegistered.type === 'master' ? 'user' : 'master') + '.');
+            logger.debug('Device exists but is not registered with ' + (isRegistered.type === 'master' ? 'user' : 'master') + '.');
             return c.json({ c: 'NOT_REGISTERED' }, 401);
         }
 
         const result = await Token.getDeviceToken(uuid);
         return c.json(result);
     } catch (err) {
-        logger.error('[Auth] Unexpected error:', err);
+        logger.error('Unexpected error:', err);
         return c.json({ c: 'ERROR' }, 500);
     }
 });
