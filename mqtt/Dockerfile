@@ -37,6 +37,8 @@ USER root
 COPY docker-entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/docker-entrypoint.sh
 
+COPY acl.conf /opt/emqx/etc/acl.conf
+
 USER emqx
 
 # emqx will occupy these port:

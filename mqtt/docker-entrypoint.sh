@@ -95,6 +95,11 @@ telemetry {
     enable = false
 }
 
+mqtt {
+    max_packet_size = "4KB"
+    use_username_as_clientid = true
+}
+
 authentication {
     enable = true
     mechanism = "password_based"
@@ -119,6 +124,15 @@ authentication {
     }
 
     connect_timeout = "3s"
+}
+
+listeners {
+    tcp {
+        enable_auth = "quick_deny_anonymous"
+        max_connections = 1000
+        max_conn_rate = "10/s"
+        messages_rate = "50/s"
+    }
 }
 EOF
 
