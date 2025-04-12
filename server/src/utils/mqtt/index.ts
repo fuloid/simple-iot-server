@@ -64,10 +64,19 @@ export async function connectMQTT() {
 }
 
 function scheduleReconnect(delay: number | null = null, log: boolean = true) {
+    if (reconnectAttempts > 15) {
+        logger.error('Too many reconnection attempts. Stopping until a client connected again...')
+        return
+    }
     const finalDelay = delay ?? calculateReconnectDelay(reconnectAttempts)
     if (!delay) reconnectAttempts++;
     if (log) logger.info(`[Realtime] Reconnecting in ${finalDelay / 1000}s` + (!delay ? ` (attempt ${reconnectAttempts})` : ''))
     setTimeout(connectMQTT, finalDelay)
+}
+
+export function resetAndReattempt() {
+    reconnectAttempts = 0
+    scheduleReconnect();
 }
 
 type HandlerFunctionType = { name: string, default: (client: MqttClient, logger: Logger) => void };

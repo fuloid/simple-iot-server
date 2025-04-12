@@ -48,7 +48,7 @@ function wrap(logger: Logger, level: ValidLogLevel, prefix: string): pino.LogFn 
             
             // thx to railway broken logs system, we need to use
             // some hacks to make sure error obj is logged correctly.
-            if (process.env.NODE_ENV === 'production' && args[1] instanceof Error) {
+            if (process.env.NODE_ENV === 'production' && args[1].message && args[1].stack) {
                 // inject the error message in the message itself.
                 obj = obj + `${args[1].message ?? ''}\n${args[1].stack}`;
             }
