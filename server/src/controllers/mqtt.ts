@@ -7,13 +7,13 @@ import logger from '@/utils/logger';
 const app = new Hono();
 
 // Serve MQTT broker address to the device
-app.get('/mqtt', async (c) => {
+app.get('/', async (c) => {
     const mqttHost = process.env.MQTT_HOST || '127.0.0.1:1833';
     return c.json({ c: 'OK', ip: mqttHost });
 });
 
 // EMQX HTTP Auth Plugin endpoint
-app.post('/mqtt/auth', async (c) => {
+app.post('/auth', async (c) => {
     const { username: uuid, password, token } = await c.req.json() as { username: string|null, password: string|null, token: string|null };
     if (!uuid || !password || !token) {
         logger.debug('[MQTT] Missing username, password or token');
