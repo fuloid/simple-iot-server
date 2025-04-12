@@ -41,6 +41,7 @@ app.post('/auth', async (c) => {
                 acl: [
                     { permission: 'allow', action: 'all', topic: `device/#/ping` },
                     { permission: 'allow', action: 'all', topic: `device/#/data` },
+                    { permission: 'deny', action: 'all', topic: `#` },
                 ]
             });
         }
@@ -71,6 +72,7 @@ app.post('/auth', async (c) => {
             // deny all other topics
             { permission: 'allow', action: 'all', topic: `device/${uuid}/ping` },
             { permission: 'allow', action: 'all', topic: `device/${uuid}/data` },
+            { permission: 'deny', action: 'all', topic: `#` },
         ];
 
         if (type === 'master') {
