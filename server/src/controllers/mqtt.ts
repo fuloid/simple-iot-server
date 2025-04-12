@@ -33,9 +33,9 @@ app.post('/auth', async (c) => {
             logger.info('[MQTT] System authentication successful.');
 
             const acl = [
+                { permission: 'deny', action: 'all' },
                 { permission: 'allow', action: 'all', topic: `device/+/ping` },
                 { permission: 'allow', action: 'all', topic: `device/+/data` },
-                { permission: 'deny', action: 'all' },
             ];
 
             setTimeout(() => subscribeTopics(clientid, acl), 500);
@@ -73,9 +73,9 @@ app.post('/auth', async (c) => {
             logger.info('[MQTT] Auth successful for device', id);
 
             const acl = [
+                { permission: 'deny', action: 'all' },
                 { permission: 'allow', action: 'all', topic: `device/${id}/ping` },
                 { permission: 'allow', action: 'all', topic: `device/${id}/data` },
-                { permission: 'deny', action: 'all' },
             ];
 
             if (type === 'master') {

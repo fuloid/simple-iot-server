@@ -80,12 +80,12 @@ dashboard {
     listeners {
         http.bind = 18083
         # https.bind = 18084
-        https {
-            ssl_options {
-                certfile = "${EMQX_ETC_DIR}/certs/cert.pem"
-                keyfile = "${EMQX_ETC_DIR}/certs/key.pem"
-            }
-        }
+        # https {
+        #     ssl_options {
+        #         certfile = "${EMQX_ETC_DIR}/certs/cert.pem"
+        #         keyfile = "${EMQX_ETC_DIR}/certs/key.pem"
+        #     }
+        # }
     }
 
     default_password = "${MQTT_ADMIN_PASSWORD}"
@@ -124,7 +124,8 @@ authentication {
         enable = true
     }
 
-    connect_timeout = "3s"
+    connect_timeout = "5s"
+    request_timeout = "5s"
 }
 
 api_key = {
