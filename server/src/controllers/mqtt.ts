@@ -39,8 +39,7 @@ app.post('/auth', async (c) => {
                 result: 'allow',
                 expire_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
                 acl: [
-                    { permission: 'allow', action: 'all', topic: `device/#/ping` },
-                    { permission: 'allow', action: 'all', topic: `device/#/data` },
+                    { permission: 'allow', action: 'all', topic: `device/#` },
                     { permission: 'deny', action: 'all', topic: `#` },
                 ]
             });
@@ -80,14 +79,14 @@ app.post('/auth', async (c) => {
             if (agentDevices.length > 0) {
                 for (const agentDeviceId of agentDevices) {
                     acl.unshift({ permission: 'allow', action: 'all', topic: `device/${agentDeviceId}/ping` });
-                    acl.unshift({ permission: 'allow', action: 'all', topic: `device/${uuid}/data/${agentDeviceId}` });
+                    acl.unshift({ permission: 'allow', action: 'all', topic: `device/${agentDeviceId}/master` });
                 }
             }
         } else {
             const masterDeviceId = await Database.getDeviceMaster(uuid);
             if (masterDeviceId) {
+                acl.unshift({ permission: 'allow', action: 'all', topic: `device/${uuid}/master` });
                 acl.unshift({ permission: 'allow', action: 'all', topic: `device/${masterDeviceId}/ping` });
-                acl.unshift({ permission: 'allow', action: 'all', topic: `device/${masterDeviceId}/data/${uuid}` });
             }
         }
 
