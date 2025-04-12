@@ -67,11 +67,10 @@ if [ -z "$IPV6_ADDR" ]; then
   exit 1
 fi
 
-export IPV6_SERVER_HOST="$IPV6_ADDR"
-echo "[INFO] Resolved $SERVER_HOST to IPv6: [$IPV6_SERVER_HOST]"
+echo "[INFO] Resolved $SERVER_HOST to IPv6: [$IPV6_ADDR]"
 
 # Build the final EMQX auth URL
-AUTH_URL="http://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
+AUTH_URL="http://${$IPV6_ADDR}:${SERVER_PORT}/mqtt/auth"
 
 # Patch EMQX configuration
 cat <<EOF > /opt/emqx/etc/emqx.conf
