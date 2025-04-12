@@ -37,15 +37,15 @@ app.post('/auth', async (c) => {
             logger.info('[MQTT] System authentication successful.');
             return c.json({
                 result: 'allow',
-                expire_at: Date.now() + 24 * 60 * 60 * 1000,
-                acl: [
-                    { permission: 'allow', action: 'all', topic: `device/#/ping` },
-                    { permission: 'allow', action: 'all', topic: `device/#/data` },
-                    { permission: 'deny', action: 'all', topic: `#` },
-                ]
+                // expire_at: Date.now() + 24 * 60 * 60 * 1000,
+                // acl: [
+                //     { permission: 'allow', action: 'all', topic: `device/#/ping` },
+                //     { permission: 'allow', action: 'all', topic: `device/#/data` },
+                //     { permission: 'deny', action: 'all', topic: `#` },
+                // ]
             });
         }
-        
+
 
         // check if username type is uuid
         if (!uuid.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
