@@ -125,13 +125,6 @@ authentication {
 
     connect_timeout = "3s"
 }
-
-listeners.tcp {
-    enable_auth = "quick_deny_anonymous"
-    max_connections = 1000
-    max_conn_rate = "10/s"
-    messages_rate = "50/s"
-}
 EOF
 
 
