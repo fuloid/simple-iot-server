@@ -123,7 +123,7 @@ authentication = [
     },
 
     {
-        enable = true
+        enable = false
         backend = "built_in_database"
         mechanism = "password_based"
         password_hash_algorithm {
