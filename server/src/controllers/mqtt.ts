@@ -119,7 +119,7 @@ const handleDeviceAuth = async (c: Context<HonoContext>, clientid: string, uuid:
 
 const subscribeTopics = async (clientid: string, acl: { permission: string, action: string, topic?: string }[]) => {
     resetAndReattempt();
-    const topics = acl.filter((item) => item.permission === 'allow' && (item.action === 'subscribe' || item.action === 'all') && item.topic).map((item) => ({ topic: item.topic }));
+    const topics = acl.filter((item) => item.permission === 'allow' && (item.action === 'subscribe' || item.action === 'all') && item.topic).map((item) => ({ topic: item.topic, nl: 1 }));
     if (topics.length > 0) {
         // fetch MQTT_HOST /api/v5/clients/systemctl/subscribe/bulk
         const response = await fetch(`https://${process.env.MQTT_WEB_HOST}/api/v5/clients/${clientid}/subscribe/bulk`, {

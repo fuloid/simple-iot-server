@@ -29,7 +29,7 @@ export default function register(client: MqttClient, logger: Logger) {
                 Database.updateDevicePing(deviceId);
 
                 // send back a pong message
-                client.publish(`device/${deviceId}/ping`, JSON.stringify({ c: 'PONG' }), { qos: 1, retain: true });
+                client.publish(`device/${deviceId}/ping`, JSON.stringify({ c: 'PONG' }), { qos: 1 });
 
             } catch (err) {
                 logger.debug('Invalid JSON payload:', message.toString())
