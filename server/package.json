@@ -6,10 +6,12 @@
   "private": true,
   "scripts": {
     "dev": "bun run --watch src/server.ts",
-    "build": "bun build server.ts --outdir=dist",
+    "build:dev": "bun build server.ts --outdir=dist",
     "build:prod": "cross-env NODE_ENV=production bun build server.ts --outfile=dist/server.js --minify --target=bun",
-    "start": "bun run src/server.ts",
+    "build": "bun build:prod",
+    "start:dev": "bun run src/server.ts",
     "start:prod": "bun run dist/server.js",
+    "start": "bun start:prod",
     "migrate": "bun drizzle-kit generate && bun run src/db/migrate.ts",
     "setup:prod": "cross-env NODE_ENV=production bun install && bun build:prod && bun migrate"
   },
