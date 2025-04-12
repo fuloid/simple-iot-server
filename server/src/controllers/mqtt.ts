@@ -38,11 +38,10 @@ app.post('/auth', async (c) => {
             return c.json({
                 result: 'allow',
                 // expire_at: Date.now() + 24 * 60 * 60 * 1000,
-                // acl: [
-                //     { permission: 'allow', action: 'all', topic: `device/#/ping` },
-                //     { permission: 'allow', action: 'all', topic: `device/#/data` },
-                //     { permission: 'deny', action: 'all', topic: `#` },
-                // ]
+                acl: [
+                    { permission: 'allow', action: 'all', topic: `device/#/ping` },
+                    { permission: 'allow', action: 'all', topic: `device/#/data` },
+                ]
             });
         }
 
@@ -72,7 +71,6 @@ app.post('/auth', async (c) => {
             // deny all other topics
             { permission: 'allow', action: 'all', topic: `device/${uuid}/ping` },
             { permission: 'allow', action: 'all', topic: `device/${uuid}/data` },
-            { permission: 'deny', action: 'all', topic: `#` },
         ];
 
         if (type === 'master') {
