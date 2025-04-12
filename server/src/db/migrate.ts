@@ -32,7 +32,7 @@ async function main() {
     } catch (error) {
         logger.error('[Migration] Checks error. database might be booting up, retries in 5 seconds...');
         await new Promise(resolve => setTimeout(resolve, 5000));
-        main(); restart = true; return;
+        restart = true; main(); return;
     }
 }
 
