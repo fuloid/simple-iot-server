@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { Database } from '@/utils/database';
 import Token from '@/utils/token';
 import logger from '@/utils/logger';
+import { fetch } from 'bun';
 
 const app = new Hono();
 
@@ -31,13 +32,17 @@ app.post('/auth', async (c) => {
         // Check if username is "systemctl"
         if (uuid === 'systemctl' && password === process.env.MQTT_SECRET_KEY) {
             logger.info('[MQTT] System authentication successful.');
+
+            const acl = [
+                { permission: 'allow', action: 'all', topic: `device/#/ping` },
+                { permission: 'allow', action: 'all', topic: `device/#/data` },
+            ];
+
+            setTimeout(() => subscribeTopics(clientid, acl), 500);
             return c.json({
                 result: 'allow',
                 expire_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-                acl: [
-                    { permission: 'allow', action: 'all', topic: `device/#/ping` },
-                    { permission: 'allow', action: 'all', topic: `device/#/data` },
-                ]
+                acl
             });
         }
 
@@ -85,6 +90,7 @@ app.post('/auth', async (c) => {
             }
         }
 
+        setTimeout(() => subscribeTopics(clientid, acl), 500);
         return c.json({
             result: 'allow',
             // expire based on token expiration time, or max 1 day
@@ -98,9 +104,18 @@ app.post('/auth', async (c) => {
 });
 
 const subscribeTopics = async (clientid: string, acl: { permission: string, action: string, topic: string }[]) => {
-    const topics = acl.filter((item) => item.permission === 'allow' && item.action === 'subscribe').map((item) => item.topic);
+    const topics = acl.filter((item) => item.permission === 'allow' && item.action === 'subscribe').map((item) => ({ topic: item.topic }));
     if (topics.length > 0) {
-        logger.info(`[MQTT] Client ${clientid} subscribed to topics: ${topics.join(', ')}`);
+        // fetch MQTT_HOST /api/v5/clients/systemctl/subscribe/bulk
+        await fetch(`${process.env.MQTT_HOST}/api/v5/clients/${clientid}/subscribe/bulk`, {
+            headers: {
+                Authorization: btoa(`systemctl:${process.env.MQTT_SECRET_KEY}`),
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(topics),
+        });
+        logger.info(`[MQTT] Client ${clientid} subscribed to topics: ${topics.map((item) => item.topic).join(', ')}`);
     }
 }
 
