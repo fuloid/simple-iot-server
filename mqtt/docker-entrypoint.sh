@@ -97,7 +97,6 @@ telemetry {
 
 mqtt {
     max_packet_size = "4KB"
-    use_username_as_clientid = true
 }
 
 authentication {
