@@ -23,7 +23,7 @@ This is an IoT server that provides:
 
 ## Project Structure
 
-```
+```yaml
 ├── mqtt/               # MQTT broker (EMQX) container
 │   ├── Dockerfile
 │   └── docker-entrypoint.sh
@@ -52,7 +52,7 @@ This is an IoT server that provides:
    - `DEVICE_MASTER_SECRET_KEY`: Secret for master device registration request
    - `DEVICE_AGENT_SECRET_KEY`: Secret for agent device registration request
    - `DEBUG`: Set to "true" for debug logging (optional)
-3. **Important** After first time deploy, you must set the EMQX API Gateway domain for Backend EMQX API access or the Backend server might crash.<br>Go to the `EMQX` service >> `Settings` >> `Networking` then add domain for API gateway (generate or use custom domain), then **redeploy** the Backend service.
+3. **Important!!** <br>After first time deploy, you must set the EMQX API Gateway domain for Backend EMQX API access or the **Backend server might crash**.<br><br>Go to the `EMQX` service >> `Settings` >> `Networking` then add domain for API gateway (generate or use custom domain), then **redeploy** the Backend service.
 
 ## API Endpoints
 
@@ -65,21 +65,35 @@ This is an IoT server that provides:
 
 **Master devices**<br>
 Master devices can publish/subscribe to:
-```
+```yaml
 device/{masterUUID}/ping
 device/{masterUUID}/data
 ```
 and related agent devices
-```
+```yaml
 device/{agentUUID}/master
 ```
 
 **Agent devices**<br>
 Agent devices can publish/subscribe to:
-```
+```yaml
 device/{agentUUID}/ping
 device/{agentUUID}/data
 device/{masterUUID}/master
+```
+
+### MQTT Commands
+
+Currently, it only support `PING` command, but will add more soon.
+
+**Master/Agent devices**
+
+Topic: `/device/{deviceUUID}/ping`
+```json
+{"c":"PING"}
+
+// Expect response from server: 
+{"c":"PONG"}
 ```
 
 ## Credits
@@ -92,5 +106,5 @@ device/{masterUUID}/master
 ## License & Credit
 
 - Code made by Realzzy, with some code parts are originally from AI (ChatGPT, Claude, etc.).
-- Readme fully generated with: [ChatGPT](https://chatgpt.com)<br>
+- 90% Readme is generated with: [ChatGPT](https://chatgpt.com)<br>
 (Why? lazy tbh goodluck!)
