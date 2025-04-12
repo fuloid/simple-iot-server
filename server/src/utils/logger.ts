@@ -17,9 +17,39 @@ export function createLogger(prefix: string, customLogger?: Logger) {
         // else make the new prefix `[${prefix}]`
         const prefixMatch = currentPrefix.match(/^\[(.+?)\]/);
         const newPrefix = prefixMatch ? `[${prefix} > ${prefixMatch[1]}] ` : `[${prefix}] `;
-        return customLogger.child({ msgPrefix: newPrefix });
+        return {
+            ...customLogger,
+            info: wrap(customLogger, 'info', newPrefix),
+            warn: wrap(customLogger, 'warn', newPrefix),
+            error: wrap(customLogger, 'error', newPrefix),
+            debug: wrap(customLogger, 'debug', newPrefix),
+        } satisfies Logger;
     }
-    return logger.child({ msgPrefix: `[${prefix}] ` });
+
+    return {
+        ...logger,
+        info: wrap(logger, 'info', prefix),
+        warn: wrap(logger, 'warn', prefix),
+        error: wrap(logger, 'error', prefix),
+        debug: wrap(logger, 'debug', prefix),
+    } satisfies Logger;
+}
+
+type ValidLogLevel = 'info' | 'error' | 'debug' | 'warn' | 'trace' | 'fatal';
+function wrap(logger: Logger, level: ValidLogLevel, prefix: string): pino.LogFn {
+    const logMethod = logger[level] as pino.LogFn;
+    // Check if the method is actually a function
+    if (typeof logMethod !== 'function') {
+        throw new Error(`Invalid logger level: ${level}`);
+    }
+    
+    return function(obj: unknown, ...args: any[]): void {
+        if (typeof obj === 'string') {
+            logMethod.call(logger, `[${prefix}] ${obj}`, ...args);
+        } else {
+            logMethod.call(logger, (obj as any), ...args);
+        }
+    } satisfies pino.LogFn;
 }
 
 export default logger;
