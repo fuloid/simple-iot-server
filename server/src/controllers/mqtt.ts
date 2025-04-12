@@ -15,12 +15,8 @@ app.get('/', async (c) => {
 // EMQX HTTP Auth Plugin endpoint
 app.post('/auth', async (c) => {
 
-    // Debug get raw body
-    const rawBody = c.body;
-    logger.debug('[MQTT] Raw body:', rawBody);
-
-    const { username: uuid, password, token } = await c.req.json() as { username: string|null, password: string|null, token: string|null };
-    if (!uuid || !password || !token) {
+    const { clientid, username: uuid, password, token } = await c.req.json() as { clientid: string|null, username: string|null, password: string|null, token: string|null };
+    if (!clientid || !uuid || !password || !token) {
         logger.debug('[MQTT] Missing username, password or token');
         return c.json({ result: 'deny' });
     }
@@ -38,10 +34,10 @@ app.post('/auth', async (c) => {
             return c.json({
                 result: 'allow',
                 expire_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-                acl: [
-                    { permission: 'allow', action: 'all', topic: `device/#` },
-                    { permission: 'deny', action: 'all', topic: `#` },
-                ]
+                // acl: [
+                //     { permission: 'allow', action: 'all', topic: `device/#` },
+                //     { permission: 'deny', action: 'all', topic: `#` },
+                // ]
             });
         }
 
@@ -94,12 +90,19 @@ app.post('/auth', async (c) => {
             result: 'allow',
             // expire based on token expiration time, or max 1 day
             expire_at: Math.floor(Math.min(Date.now() + 24 * 60 * 60 * 1000, new Date(token_expires_at!).getTime()) / 1000),
-            acl
+            // acl
         });
     } catch (err) {
         logger.error('[MQTT] Unexpected error:', err);
         return c.json({ result: 'deny' });
     }
 });
+
+const subscribeTopics = async (clientid: string, acl: { permission: string, action: string, topic: string }[]) => {
+    const topics = acl.filter((item) => item.permission === 'allow' && item.action === 'subscribe').map((item) => item.topic);
+    if (topics.length > 0) {
+        logger.info(`[MQTT] Client ${clientid} subscribed to topics: ${topics.join(', ')}`);
+    }
+}
 
 export default app;

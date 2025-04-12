@@ -125,7 +125,15 @@ authentication {
 
     connect_timeout = "3s"
 }
+
+api_key = {
+  bootstrap_file = "etc/api_key.conf"
+}
 EOF
 
+# Add api key config
+cat <<EOF > /opt/emqx/etc/api_key.conf
+systemctl:${MQTT_SECRET_KEY}
+EOF
 
 exec "$@"
