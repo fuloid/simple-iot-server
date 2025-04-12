@@ -3,7 +3,6 @@ import { Hono } from 'hono';
 import { Database } from '@/utils/database';
 import Token from '@/utils/token';
 import logger from '@/utils/logger';
-import { fetch } from 'bun';
 
 const app = new Hono();
 
