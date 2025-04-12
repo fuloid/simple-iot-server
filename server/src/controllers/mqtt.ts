@@ -14,6 +14,11 @@ app.get('/', async (c) => {
 
 // EMQX HTTP Auth Plugin endpoint
 app.post('/auth', async (c) => {
+
+    // Debug get raw body
+    const rawBody = c.body;
+    logger.debug('[MQTT] Raw body:', rawBody);
+
     const { username: uuid, password, token } = await c.req.json() as { username: string|null, password: string|null, token: string|null };
     if (!uuid || !password || !token) {
         logger.debug('[MQTT] Missing username, password or token');
