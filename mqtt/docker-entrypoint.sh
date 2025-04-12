@@ -118,10 +118,6 @@ authentication {
         enable = true
     }
 
-    on_success = stop
-    on_failure = stop
-    on_error = stop
-
     connect_timeout = "3s"
 }
 EOF
