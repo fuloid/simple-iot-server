@@ -6,6 +6,8 @@ This readme only provides some explanation for the codebase that might be uncomp
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/3Jbbxj?referralCode=4iJO-9)
 
+- There's some important step to look before you deploy. Please check them first. ([here](#hosting))
+
 ## What's This?
 
 This is an IoT server that provides:
@@ -46,13 +48,11 @@ This is an IoT server that provides:
 
 1. Click the "Deploy on Railway" button above
 2. Configure the required environment variables:
-   - `DATABASE_URL`: PostgreSQL connection string
-   - `JWT_SECRET`: Secret for JWT token generation
+   - `MQTT_ADMIN_PASSWORD`: EMQX dashboard admin password
    - `DEVICE_MASTER_SECRET_KEY`: Secret for master device registration request
    - `DEVICE_AGENT_SECRET_KEY`: Secret for agent device registration request
-   - `MQTT_SECRET_KEY`: Secret for MQTT broker authentication
-   - `MQTT_ADMIN_PASSWORD`: EMQX dashboard admin password
    - `DEBUG`: Set to "true" for debug logging (optional)
+3. **Important** After first time deploy, you must set the EMQX API Gateway domain for Backend EMQX API access or the Backend server might crash.<br>Go to the `EMQX` service >> `Settings` >> `Networking` then add domain for API gateway (generate or use custom domain), then **redeploy** the Backend service.
 
 ## API Endpoints
 

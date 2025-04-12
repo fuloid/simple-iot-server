@@ -37,19 +37,4 @@ async function main() {
     }
 }
 
-if (process.env.MQTT_WEB_HOST ?? '' == '') {
-    logger.info('');
-    logger.info('-------------------------------------------------------------------------------------');
-    logger.info('');
-    logger.info('  Hey there! It seems that you missed to set MQTT web host server in variables.');
-    logger.info('  If you haven\'t set up the MQTT server yet, please go to the');
-    logger.info('  EMQX service >> Settings >> Networking then add domain for API gateway');
-    logger.info('  (generate or use custom domain), then redeploy the Backend service.');
-    logger.info('');
-    logger.info('-------------------------------------------------------------------------------------');
-    logger.info('');
-
-    // kill the process
-    process.exit(1);
-}
 main();
