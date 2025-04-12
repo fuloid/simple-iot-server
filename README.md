@@ -24,14 +24,14 @@ This is an IoT server that provides:
 ## Project Structure
 
 ```yaml
-├── mqtt/               # MQTT broker (EMQX) container
+├── mqtt/                  # MQTT broker (EMQX) container
 │   ├── Dockerfile
 │   └── docker-entrypoint.sh
-└── server/            # Main API server
+└── server/                # Main API server
     ├── src/
     │   ├── controllers/   # API route handlers
-    │   ├── db/           # Database schema and migrations 
-    │   └── utils/        # Helper utilities
+    │   ├── db/            # Database schema and migrations 
+    │   └── utils/         # Helper utilities
     └── package.json
 ```
 
@@ -89,7 +89,7 @@ Currently, it only support `PING` command, but will add more soon.
 **Master/Agent devices**
 
 Topic: `/device/{deviceUUID}/ping`
-```json
+```js
 {"c":"PING"}
 
 // Expect response from server: 
