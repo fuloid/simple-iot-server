@@ -133,7 +133,7 @@ authentication = [
         }
         user_id_type = "username"
     }
-}
+]
 EOF
 
 
