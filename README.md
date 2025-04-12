@@ -1,17 +1,23 @@
-# Simple IoT Server
+# ~~Simple~~ IoT Server
 
-A lightweight IoT server implementation for managing and monitoring smart devices with MQTT support.
+A (probably) lightweight IoT server implementation for managing and monitoring smart devices with MQTT support.
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/YOUR_TEMPLATE_ID)
+This codebase includes detailed documentation in the code comments and implementation. Please review the source code carefully to fully understand the architecture and functionality before making any modifications.
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/3Jbbxj?referralCode=4iJO-9)
 
 ## What's This?
 
-This is a simple IoT server that provides:
+This is an IoT server that provides:
 - Device authentication and management
 - MQTT message broker for device communication  
 - Support for master (controller) and agent devices
-- Token-based authentication
+- Token-based authentication with JWT
 - Rate limiting and security features
+- Automatic device reconnection handling
+- Structured logging system with prefixes
+- Database migrations and ORM support
+- Production-ready deployment configurations
 
 ## Project Structure
 
@@ -34,20 +40,26 @@ This is a simple IoT server that provides:
 - **Database**: PostgreSQL with [Drizzle ORM](https://orm.drizzle.team)
 - **Authentication**: JWT tokens
 - **Deployment**: [Railway](https://railway.app)
+- **Logging**: Pino with pretty printing
 
 ## Hosting
 
 1. Click the "Deploy on Railway" button above
 2. Configure the required environment variables:
+   - `DATABASE_URL`: PostgreSQL connection string
    - `JWT_SECRET`: Secret for JWT token generation
    - `DEVICE_MASTER_SECRET_KEY`: Secret for master device registration request
    - `DEVICE_AGENT_SECRET_KEY`: Secret for agent device registration request
+   - `MQTT_SECRET_KEY`: Secret for MQTT broker authentication
    - `MQTT_ADMIN_PASSWORD`: EMQX dashboard admin password
+   - `DEBUG`: Set to "true" for debug logging (optional)
 
 ## API Endpoints
 
 ### Authentication
-- `GET /auth/devices/request?uuid={deviceId}&type={master|agent}`: Request device registration
+- `GET /auth/devices/request?uuid={deviceId}`: Request device registration
+- `POST /mqtt/auth`: MQTT broker authentication endpoint
+- `GET /mqtt`: Get MQTT broker connection details
 
 ### MQTT Topics
 
@@ -55,20 +67,17 @@ Master devices can publish/subscribe to:
 ```
 device/{masterUUID}/ping
 device/{masterUUID}/data
-device/{masterUUID}/data/{agentUUID}
+```
+and related agent devices
+```
+device/{agentUUID}/master
 ```
 
 Agent devices can publish/subscribe to:
 ```
 device/{agentUUID}/ping
 device/{agentUUID}/data
-device/{masterUUID}/data/{agentUUID}
-```
-
-System can access:
-```
-device/+/ping
-device/+/data
+device/{masterUUID}/master
 ```
 
 ## Credits
@@ -81,3 +90,7 @@ device/+/data
 ## License
 
 Licensed by Realzzy, do not use without permission.
+
+## Credit
+
+- Readme generated with: [ChatGPT](https://chatgpt.com)
