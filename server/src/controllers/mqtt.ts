@@ -37,7 +37,7 @@ app.post('/auth', async (c) => {
             logger.info('[MQTT] System authentication successful.');
             return c.json({
                 result: 'allow',
-                expire_at: Date.now() + 24 * 60 * 60 * 1000,
+                expire_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
                 acl: [
                     { permission: 'allow', action: 'all', topic: `device/#/ping` },
                     { permission: 'allow', action: 'all', topic: `device/#/data` },
@@ -92,7 +92,7 @@ app.post('/auth', async (c) => {
         return c.json({
             result: 'allow',
             // expire based on token expiration time, or max 1 day
-            expire_at: Math.min(Date.now() + 24 * 60 * 60 * 1000, new Date(token_expires_at!).getTime()),
+            expire_at: Math.floor(Math.min(Date.now() + 24 * 60 * 60 * 1000, new Date(token_expires_at!).getTime()) / 1000),
             acl
         });
     } catch (err) {
