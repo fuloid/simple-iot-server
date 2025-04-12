@@ -33,7 +33,7 @@ app.post('/auth', async (c) => {
     try {
 
         // Check if username is "systemctl"
-        if (uuid === 'systemctl') {
+        if (uuid === 'systemctl' && password === process.env.MQTT_SECRET_KEY) {
             logger.info('[MQTT] System authentication successful.');
             return c.json({
                 result: 'allow',
