@@ -15,15 +15,14 @@ export function createLogger(prefix: string, customLogger?: Logger) {
 
         // if exist, extract the prefix from the current logger with match
         // if prefix exist, then make the new prefix `[${prefix} > ${currentPrefix}]`
-        // else make the new prefix `[${prefix}]`
-        const prefixMatch = currentPrefix.match(/^\[(.+?)\]/);
-        const newPrefix = prefixMatch ? `[${prefix} > ${prefixMatch[1]}] ` : `[${prefix}] `;
+        // else make the new prefix `[${prefix}]`]
+        const newPrefix = currentPrefix != '' ? `${currentPrefix} > ${prefix}` : `${prefix}`;
         return {
             ...customLogger,
-            info: wrap(customLogger, 'info', newPrefix),
-            warn: wrap(customLogger, 'warn', newPrefix),
-            error: wrap(customLogger, 'error', newPrefix),
-            debug: wrap(customLogger, 'debug', newPrefix),
+            info: wrap(logger, 'info', newPrefix),
+            warn: wrap(logger, 'warn', newPrefix),
+            error: wrap(logger, 'error', newPrefix),
+            debug: wrap(logger, 'debug', newPrefix),
             prefix: newPrefix,
         } satisfies Logger;
     }

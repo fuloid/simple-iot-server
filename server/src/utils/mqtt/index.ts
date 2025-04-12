@@ -37,7 +37,7 @@ export async function connectMQTT() {
         }
     }
 
-    client = mqtt.connect(process.env.MQTT_HOST!, {
+    client = mqtt.connect(`mqtt://${process.env.MQTT_HOST}`!, {
         clientId: generateRandom(12),
         username: 'systemctl',
         password: process.env.MQTT_SECRET_KEY,
@@ -51,6 +51,7 @@ export async function connectMQTT() {
     })
 
     client.on('error', (err) => {
+        console.error(err);
         logger.error('Connection error:', err.message)
         client?.end()
         scheduleReconnect()
