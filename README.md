@@ -56,10 +56,34 @@ This is an IoT server that provides:
 
 ## API Endpoints
 
+Both API server and gateway will response a json format.<br>
+More example can be see below.
+
+- `c`: **Result Code**<br>
+This indicate for the response result.<br>
+Possible output: 
+  - `OK`: Response success.
+  - `FORBIDDEN`: You're unauthenticated or trying to access unallowed resource.
+  - `NOT_REGISTERED`: The device isn't registered yet.
+  - `ERROR`: Internal server error occured.
+
+- `t`: **Session Token**<br>
+Used to authenticate to all other endpoints/mqtt server.<br>
+Can be obtained from device registration endpoint.<br>
+Possible output: `JWT string`
+
+- `ip`: **MQTT Server IP**<br>
+This response is specific for API endpoint `/mqtt` when requesting server ip.<br>
+Possible output: `A resolvable IP`
+
 ### Authentication
-- `GET /auth/devices/request?uuid={deviceId}`: Request device registration
-- `POST /mqtt/auth`: MQTT broker authentication endpoint
-- `GET /mqtt`: Get MQTT broker connection details
+- `GET /auth/devices/request?uuid={deviceId}`<br>
+Request device registration and token.<br>
+Example output: `{"c":"OK","t":"eyJkZXZpY2i...M2n5I"}`
+
+- `GET /mqtt`<br>
+Get MQTT broker connection details.<br>
+Example output: `{"c":"OK","ip":"gateway.rlwy.net:12345"}`
 
 ### MQTT Topics
 
