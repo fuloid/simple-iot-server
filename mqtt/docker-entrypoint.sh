@@ -60,16 +60,8 @@ export EMQX_RPC__PORT_DISCOVERY="${EMQX_RPC__PORT_DISCOVERY:-manual}"
 : "${MQTT_SECRET_KEY:?Missing MQTT_SECRET_KEY}"
 : "${MQTT_ADMIN_PASSWORD:?Missing MQTT_ADMIN_PASSWORD}"
 
-IPV6_ADDR=$(getent ahosts "$SERVER_HOST" | awk '/STREAM/ && $1 ~ /:/ { print $1; exit }')
-
-if [ -z "$IPV6_ADDR" ]; then
-  echo "[ERROR] Failed to resolve IPv6 for $SERVER_HOST"
-  exit 1
-fi
-
-echo "[INFO] Resolved $SERVER_HOST to IPv6: [$IPV6_ADDR]"
-
-AUTH_URL="http://[${IPV6_ADDR}]:${SERVER_PORT}/mqtt/auth"
+# Build the final EMQX auth URL
+AUTH_URL="https://${SERVER_HOST}:${SERVER_PORT}/mqtt/auth"
 
 # Patch EMQX configuration
 cat <<EOF > /opt/emqx/etc/emqx.conf
