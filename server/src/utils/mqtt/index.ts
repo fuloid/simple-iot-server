@@ -66,6 +66,7 @@ export async function connectMQTT() {
 }
 
 function scheduleReconnect(delay: number | null = null, log: boolean = true) {
+    if (client?.connected) return;
     if (reconnectAttempts > 15) {
         logger.error('Too many reconnection attempts. Stopping until a client connected again...')
         return
