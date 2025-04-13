@@ -114,7 +114,7 @@ Agent devices can publish/subscribe to:
 ```yaml
 device/{agentUUID}/ping
 device/{agentUUID}/data
-device/{masterUUID}/master
+device/{agentUUID}/master
 ```
 
 ### MQTT Commands
