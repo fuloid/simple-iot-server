@@ -88,7 +88,7 @@ Possible output: `A resolvable IP`
 ### Authentication
 
 #### Device authentication > API Server
-- <a name="endpoints/auth/devices/request"></a> `GET /auth/devices/request?uuid={deviceId}`<br>
+- <a name="endpoints/auth/devices/request.get"></a> `GET /auth/devices/request?uuid={deviceId}`<br>
 Request device registration and token.<br><br>
 **Note:** This server **does not check** for uuid device registry, and allows **any valid uuid** with valid secret key to be registered to the database. This is by default for making device registration easier. Be careful!<br><br>
 Possible output:<br>
@@ -101,7 +101,7 @@ Possible output:<br>
   - [Error](#end-code)<br>
   `{"c":"ERROR"}`<br><br>
 
-- <a name="endpoints/mqtt" style="margin-top:-20px;"></a> `GET /mqtt`<br>
+- <a name="endpoints/mqtt.get" style="margin-top:-20px;"></a> `GET /mqtt`<br>
 Get MQTT broker connection details. (token using from the device registration endpoint)<br>
 Possible output:<br>
   - Success<br>
@@ -114,7 +114,9 @@ Possible output:<br>
 #### Device authentication > MQTT
 This is mostly handled by mqtt client, but you might want to add logic to request new token to device registration endpoint when received `Not authorized` error (this is a message sent by mqtt server when an invalid/expired credentials are passed.)
 
-If you're trying to connect manually, you can use this credentials:
+If you're trying to connect manually, you can use this information and credentials:
+- Server IP: ([Look here](#endpoints/mqtt.get))
+- Client ID: `<any random string>`
 - Username: `device_<uuid>`
 - Password: `<token received from device registration endpoint>`
 
