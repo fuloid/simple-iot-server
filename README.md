@@ -96,7 +96,7 @@ Possible output:<br>
   `{"c":"OK","t":"eyJkZXZpY2i...M2n5I"}`
   - Not registered (device is valid but not registered / assigned to an owner. User must send a valid device registration endpoint first in order for device to be added as registered. (endpoint coming soon, please manually add it for now))<br>
   `{"c":"NOT_REGISTERED"}`<br>
-  - Forbidden (in most case, you have typos in secret key)
+  - Forbidden (in most case, you have typos in secret key)<br>
   `{"c":"FORBIDDEN"}`<br>
   - [Error](#end-code)<br>
   `{"c":"ERROR"}`<br><br>
