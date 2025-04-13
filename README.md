@@ -56,7 +56,7 @@ This is an IoT server that provides:
 
 ## Arduino Client Lib (ESP8266)
 
-A library for esp8266 is available at `arduino_client/esp8266` folder, including example. Currently it's untested, so be careful!
+A library for esp8266 is available at `arduino_client/esp8266` folder, including example. Currently it's untested and may contains bug or unexpected error, so be careful!
 
 To use the library, please make sure both `KV` and `SMServer` is imported to your project, and install `PubSubClient` and `ArduinoJson` from Arduino library.
 
@@ -85,7 +85,8 @@ Possible output: `A resolvable IP`
 ### Authentication
 - `GET /auth/devices/request?uuid={deviceId}`<br>
 Request device registration and token.<br>
-Example output: `{"c":"OK","t":"eyJkZXZpY2i...M2n5I"}`
+Example output: `{"c":"OK","t":"eyJkZXZpY2i...M2n5I"}`<br>
+**Note:** This server **does not check** for uuid device registry, and allows **any valid uuid** with valid secret key to be registered to the database. This is by default for making device registration easier. Be careful!
 
 - `GET /mqtt`<br>
 Get MQTT broker connection details.<br>
