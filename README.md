@@ -69,12 +69,12 @@ To use the library, please make sure both `KV` and `SMServer` is imported to you
 Both API server and gateway will response a json format.<br>
 More example can be see below.
 
-- `c`: **Result Code**<br>
+- <a name="end-code"></a> `c`: **Result Code**<br>
 This indicate for the response result.<br>
 Common possible output: 
   - `OK`: Response success.
   - `FORBIDDEN`: You're unauthenticated or trying to access unallowed resource.
-  - <a name="end-code-error" style="margin-top:-20px;"></a> `ERROR`: Internal server error occured. (any unhandled exception can caused this, recommend enabling `DEBUG` mode)
+  - `ERROR`: Internal server error occured. (any unhandled exception can caused this, recommend enabling `DEBUG` mode)
 
 - `t`: **Session Token**<br>
 Used to authenticate to all other endpoints/mqtt server.<br>
@@ -88,7 +88,7 @@ Possible output: `A resolvable IP`
 ### Authentication
 
 #### Device authentication > API Server
-- <a name="endpoints/auth/devices/request" style="margin-top:-20px;"></a> `GET /auth/devices/request?uuid={deviceId}`<br>
+- <a name="endpoints/auth/devices/request"></a> `GET /auth/devices/request?uuid={deviceId}`<br>
 Request device registration and token.<br><br>
 **Note:** This server **does not check** for uuid device registry, and allows **any valid uuid** with valid secret key to be registered to the database. This is by default for making device registration easier. Be careful!<br><br>
 Possible output:<br>
@@ -98,7 +98,7 @@ Possible output:<br>
   `{"c":"NOT_REGISTERED"}`<br>
   - Forbidden (in most case, you have typos in secret key)
   `{"c":"FORBIDDEN"}`<br>
-  - [Error](#end-code-error)<br>
+  - [Error](#end-code)<br>
   `{"c":"ERROR"}`<br><br>
 
 - <a name="endpoints/mqtt" style="margin-top:-20px;"></a> `GET /mqtt`<br>
@@ -108,7 +108,7 @@ Possible output:<br>
   `{"c":"OK","ip":"gateway.rlwy.net:12345"}`
   - Forbidden (invalid/expired session token, please request to device registration endpoint again for new token)<br>
   `{"c":"FORBIDDEN"}`<br>
-  - [Error](#end-code-error)<br>
+  - [Error](#end-code)<br>
   `{"c":"ERROR"}`
 
 #### Device authentication > MQTT
