@@ -54,6 +54,12 @@ This is an IoT server that provides:
    - `DEBUG`: Set to "true" for debug logging (optional)
 3. **Important!!** <br>After first time deploy, you must set the EMQX API Gateway domain for Backend EMQX API access or the **Backend server might crash**.<br><br>Go to the `EMQX` service >> `Settings` >> `Networking` then add domain for API gateway (generate or use custom domain), then **redeploy** the Backend service.
 
+## Arduino Client Lib (ESP8266)
+
+A library for esp8266 is available at `arduino_client/esp8266` folder, including example. Currently it's untested, so be careful!
+
+To use the library, please make sure both `KV` and `SMServer` is imported to your project, and install `PubSubClient` and `ArduinoJson` from Arduino library.
+
 ## API Endpoints
 
 Both API server and gateway will response a json format.<br>
