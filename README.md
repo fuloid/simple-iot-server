@@ -9,7 +9,7 @@ This server are only intended for testing and development. I do not recommend to
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/3Jbbxj?referralCode=4iJO-9)
 
-- There's some important step to look before you deploy. Please check them first. ([here](#hosting))
+- There's some important step to look before you deploy. Please check them first. ([here](#hosting-important-step))
 
 ## 🤔 What's This?
 
@@ -22,7 +22,7 @@ This is an IoT server that provides:
 - Automatic device reconnection handling
 - Structured logging system with prefixes
 - Database migrations and ORM support
-- Deploy-ready configurations (with Railway template) (some configuration might not completely set, check [here](#hosting))
+- Deploy-ready configurations (with Railway template) (some configuration might not completely set, check [here](#hosting-important-step))
 
 ## 📂 Project Structure
 
@@ -47,6 +47,7 @@ This is an IoT server that provides:
 - **Logging**: Pino with pretty printing
 - **Deployment**: [Railway](https://railway.app) (Recommended)
 
+<a name="hosting-important-step"></a>
 ## 💻 Hosting
 
 1. Click the "Deploy on Railway" button above
