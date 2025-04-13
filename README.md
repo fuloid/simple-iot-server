@@ -141,5 +141,5 @@ Topic: `/device/{deviceUUID}/ping`
 ## License & Credit
 
 - Code made by Realzzy, with some code parts are originally from AI (ChatGPT, Claude, etc.).
-- 90% Readme is generated with: [ChatGPT](https://chatgpt.com)<br>
-(Why? lazy tbh goodluck!)
+- Readme is generated with help from: [ChatGPT](https://chatgpt.com)<br>
+(Also originally) (Why? kind of lazy tbh goodluck!)
