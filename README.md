@@ -74,7 +74,7 @@ This indicate for the response result.<br>
 Common possible output: 
   - `OK`: Response success.
   - `FORBIDDEN`: You're unauthenticated or trying to access unallowed resource.
-  - <a name="end-code-error"></a> `ERROR`: Internal server error occured. (any unhandled exception can caused this, recommend enabling `DEBUG` mode)
+  - <a name="end-code-error" style="margin-top:-20px;"></a> `ERROR`: Internal server error occured. (any unhandled exception can caused this, recommend enabling `DEBUG` mode)
 
 - `t`: **Session Token**<br>
 Used to authenticate to all other endpoints/mqtt server.<br>
@@ -88,7 +88,7 @@ Possible output: `A resolvable IP`
 ### Authentication
 
 #### Device authentication > API Server
-- <a name="endpoints/auth/devices/request"></a> `GET /auth/devices/request?uuid={deviceId}`<br>
+- <a name="endpoints/auth/devices/request" style="margin-top:-20px;"></a> `GET /auth/devices/request?uuid={deviceId}`<br>
 Request device registration and token.<br><br>
 **Note:** This server **does not check** for uuid device registry, and allows **any valid uuid** with valid secret key to be registered to the database. This is by default for making device registration easier. Be careful!<br><br>
 Possible output:<br>
@@ -101,7 +101,7 @@ Possible output:<br>
   - [Error](#end-code-error)<br>
   `{"c":"ERROR"}`<br><br>
 
-- <a name="endpoints/mqtt"></a> `GET /mqtt`<br>
+- <a name="endpoints/mqtt" style="margin-top:-20px;"></a> `GET /mqtt`<br>
 Get MQTT broker connection details. (token using from the device registration endpoint)<br>
 Possible output:<br>
   - Success<br>
