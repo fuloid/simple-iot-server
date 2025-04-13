@@ -5,7 +5,7 @@ A (probably) lightweight IoT server implementation for managing and monitoring s
 This readme only provides some explanation for the codebase that might be uncompleted. Please review the source code carefully to fully understand the architecture and functionality before making any modifications.
 
 ### ⚠️ Also note that this is not Production ready!
-This server are only intended for testing and development. I did not recommend to use this for production, as this may still contains bug and vulnerability hidden in the code.
+This server are only intended for testing and development. I do not recommend to use this for production, as this may still contains bug and vulnerability hidden in the code.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/3Jbbxj?referralCode=4iJO-9)
 
