@@ -1,8 +1,7 @@
 #include "SMServer.h"
 
 SMServer::SMServer(const char* serverHost, const char* uuid, const char* secret)
-  : _mqttClient(_wifiClient), _serverHost(serverHost), _secret(secret) {
-  _uuid = String("device_") + uuid;
+  : _mqttClient(_wifiClient), _uuid(uuid), _serverHost(serverHost), _secret(secret) {
   
   _mqttClient.setKeepAlive(30);
   _mqttClient.setCallback([this](char* topic, byte* payload, unsigned int length) {
@@ -90,11 +89,11 @@ void SMServer::loop() {
 void SMServer::ping(bool pong) {
   String command = pong ? "PONG" : "PING";
   String payload = "{\"c\":\"" + command + "\"}";
-  _mqttClient.publish(("device/" + String(_uuid) + "/ping").c_str(), payload.c_str());
+  _mqttClient.publish(("device/" + _uuid + "/ping").c_str(), payload.c_str());
 }
 
 void SMServer::subscribeToTopics() {
-  _mqttClient.subscribe(("device/" + String(_uuid) + "/ping").c_str());
+  _mqttClient.subscribe(("device/" + _uuid + "/ping").c_str());
 }
 
 bool SMServer::connectMQTT() {
@@ -121,7 +120,7 @@ bool SMServer::connectMQTT() {
   _mqttClient.setServer(host.c_str(), port);
   Serial.println("Connecting to MQTT at " + host + ":" + String(port));
   String clientId = String(random(0xffff), HEX);
-  if (!_mqttClient.connect(clientId.c_str(), _uuid.c_str(), _token.c_str())) {
+  if (!_mqttClient.connect(clientId.c_str(), ("device_" + _uuid).c_str(), _token.c_str())) {
     Serial.println("MQTT connect failed");
     return false;
   }

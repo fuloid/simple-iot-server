@@ -114,6 +114,10 @@ Possible output:<br>
 #### Device authentication > MQTT
 This is mostly handled by mqtt client, but you might want to add logic to request new token to device registration endpoint when received `Not authorized` error (this is a message sent by mqtt server when an invalid/expired credentials are passed.)
 
+If you're trying to connect manually, you can use this credentials:
+- Username: `device_<uuid>`
+- Password: `<token received from device registration endpoint>`
+
 ### MQTT Topics
 
 **Master devices**<br>
