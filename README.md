@@ -9,7 +9,7 @@ This server are only intended for testing and development. I do not recommend to
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/3Jbbxj?referralCode=4iJO-9)
 
-- There's some important step to look before you deploy. Please check them first. ([here](#hosting-important-step))
+- There's some important step to look before you deploy. Please check them first. ([here](#hosting))
 
 ## 🤔 What's This?
 
@@ -22,7 +22,7 @@ This is an IoT server that provides:
 - Automatic device reconnection handling
 - Structured logging system with prefixes
 - Database migrations and ORM support
-- Deploy-ready configurations (with Railway template) (some configuration might not completely set, check [here](#hosting-important-step))
+- Deploy-ready configurations (with Railway template) (some configuration might not completely set, check [here](#hosting))
 
 ## 📂 Project Structure
 
@@ -47,7 +47,7 @@ This is an IoT server that provides:
 - **Logging**: Pino with pretty printing
 - **Deployment**: [Railway](https://railway.app) (Recommended)
 
-<a name="hosting-important-step"></a>
+<a name="hosting"></a>
 ## 💻 Hosting
 
 1. Click the "Deploy on Railway" button above
@@ -56,7 +56,7 @@ This is an IoT server that provides:
    - `DEVICE_MASTER_SECRET_KEY`: Secret for master device registration request
    - `DEVICE_AGENT_SECRET_KEY`: Secret for agent device registration request
    - `DEBUG`: Set to "true" for debug logging (optional)
-3. **Important!!** <br>After first time deploy, you must set the EMQX gateway (http) domain in order for Backend be able to access the EMQX API or the **Backend server might crash**.<br><br>Go to the `EMQX` service >> `Settings` >> `Networking` then add domain for API gateway (generate or use custom domain), then **redeploy** the Backend service.
+3. ⚠️ **Important!!** <br>After first time deploy, you must set the EMQX gateway (http) domain in order for Backend be able to access the EMQX API or the **Backend server might crash**.<br><br>Go to the `EMQX` service >> `Settings` >> `Networking` then add domain for API gateway (generate or use custom domain), then **redeploy** the Backend service.
 
 ## ♾️ Arduino Client Lib (ESP8266)
 
