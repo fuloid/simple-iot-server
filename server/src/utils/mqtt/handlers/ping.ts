@@ -51,8 +51,9 @@ function pingDevice(client: MqttClient, logger: Logger) {
         if (attempt < 3) {
             client.publish(`device/ping`, 'ping', { qos: 1, retain: true });
             pingCache = { lastPing, attempt: attempt + 1 };
-        } else {
+        } else if (attempt == 3) {
             logger.warn("Device is not responding after 3 attempts.");
+            pingCache = { lastPing, attempt: attempt + 1 };
         }
     }
 }
