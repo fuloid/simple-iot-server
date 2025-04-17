@@ -26,7 +26,7 @@ async function main() {
             await pool.end();
             return;
         }
-    } catch { return; }
+    } catch { }
 
     try {
         await migrate(db, { migrationsFolder: './drizzle' });
