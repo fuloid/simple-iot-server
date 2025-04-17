@@ -3,7 +3,7 @@ import { Hono, type Context } from 'hono';
 import { Database } from '@/utils/database';
 import { createLogger } from '@/utils/logger';
 import type { HonoContext } from '@/server';
-import client from '@/utils/mqtt';
+import { getClient } from '@/utils/mqtt';
 
 const app = new Hono();
 const logger = createLogger('API');
@@ -68,7 +68,7 @@ app.post('/action', async (c: Context<HonoContext>) => {
         }, 503);
     }
 
-    client?.publish(`device/remote`, action, { qos: 1, retain: true });
+    getClient().publish(`device/remote`, action, { qos: 1, retain: true });
     Database.addActionLog('user_action', { action });
     logger.debug(`Action "${action}" sent to device.`);
 

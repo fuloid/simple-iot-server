@@ -106,4 +106,7 @@ function registerHandlers() {
     logger.info('MQTT handlers registered successfully.');
 }
 
-export default client;
+export function getClient(): MqttClient {
+    if (!client || !client.connected) throw new Error('MQTT client not connected');
+    return client;
+}

@@ -6,7 +6,7 @@ export const name = 'ping';
 let pingCache: { lastPing: number, attempt: number } = { lastPing: 0, attempt: 0 };
 
 export default function register(client: MqttClient, logger: Logger) {
-    setInterval(() => pingDevice(client, logger), 15 * 1000);
+    setInterval(() => pingDevice(client, logger), 10 * 1000);
 
     client.on('message', (topic, message) => {
         if (topic === "device/ping") {
@@ -36,11 +36,11 @@ function pingDevice(client: MqttClient, logger: Logger) {
     const now = Date.now();
     const { lastPing, attempt } = pingCache;
     if (now - lastPing > 15 * 1000) {
-        if (attempt < 3) {
-            client.publish(`device/ping`, 'ping', { qos: 1, retain: true });
-            pingCache = { lastPing, attempt: attempt + 1 };
-        } else if (attempt == 3) {
+        if (attempt == 3) {
             logger.warn("Device is not responding after 3 attempts.");
+        }
+        if (attempt < 10) {
+            client.publish(`device/ping`, 'ping', { qos: 1, retain: true });
             pingCache = { lastPing, attempt: attempt + 1 };
         }
     }
