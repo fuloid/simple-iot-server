@@ -1,71 +1,33 @@
-import type { InferSelectModel } from 'drizzle-orm';
 import {
     pgTable,
     uuid,
     text,
+    jsonb,
     timestamp,
-    primaryKey,
+    pgEnum,
 } from 'drizzle-orm/pg-core';
+import type { InferSelectModel } from 'drizzle-orm';
 
-// Users table
-export const users = pgTable('users', {
-    id: uuid('id').primaryKey().defaultRandom(),
-    name: text('name').notNull(),
-    username: text('username').notNull().unique(),
-    encrypted_password: text('encrypted_password').notNull(),
-    last_login_at: timestamp('last_login_at', { withTimezone: true }),
-    last_ping_at: timestamp('last_ping_at', { withTimezone: true }),
-    created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
-    updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
-});
+export const actionTypeEnum = pgEnum('action_type', [
+    'device_auth',
+    'user_auth',
+    'user_action',
+]);
 
-// Master devices table (controller)
-export const master_devices = pgTable('master_devices', {
+export const action_logs = pgTable('action_logs', {
     id: uuid('id').primaryKey(),
-    name: text('name'),
-    owner_id: uuid('owner_id').references(() => users.id, {
-        onDelete: 'set null',
-    }),
-    token: text('token'),
-    token_expires_at: timestamp('token_expires_at', { withTimezone: true }),
-    last_ping_at: timestamp('last_ping_at', { withTimezone: true }),
-    created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
-    updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+    type: actionTypeEnum('type').notNull(),
+    metadata: jsonb('metadata'),
+    created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 });
 
-// Agent devices table (agent)
-export const agent_devices = pgTable('agent_devices', {
+export const devices = pgTable('devices', {
     id: uuid('id').primaryKey(),
-    name: text('name'),
-    token: text('token'),
-    token_expires_at: timestamp('token_expires_at', { withTimezone: true }),
-    last_ping_at: timestamp('last_ping_at', { withTimezone: true }),
-    created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
-    updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+    last_ping: timestamp('last_ping', { withTimezone: true }),
+    cache_data: jsonb('cache_data'),
+    cache_config: jsonb('cache_config'),
+    updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 });
 
-// Users - Master devices join table
-export const users_devices = pgTable('users_devices', {
-    user_id: uuid('user_id')
-        .notNull()
-        .references(() => users.id, { onDelete: 'cascade' }),
-    device_id: uuid('master_device_id')
-        .notNull()
-        .references(() => master_devices.id, { onDelete: 'cascade' }),
-});
-
-// Master - Agent devices join table
-export const master_agent_devices = pgTable('master_agent_devices', {
-    master_device_id: uuid('master_device_id')
-        .notNull()
-        .references(() => master_devices.id, { onDelete: 'cascade' }),
-    agent_device_id: uuid('agent_device_id')
-        .notNull()
-        .references(() => agent_devices.id, { onDelete: 'cascade' }),
-});
-
-export type User = InferSelectModel<typeof users>;
-export type MasterDevice = InferSelectModel<typeof master_devices>;
-export type AgentDevice = InferSelectModel<typeof agent_devices>;
-export type UserDevice = InferSelectModel<typeof users_devices>;
-export type MasterAgentDevice = InferSelectModel<typeof master_agent_devices>;
+export type ActionLog = InferSelectModel<typeof action_logs>;
+export type Device = InferSelectModel<typeof devices>;
