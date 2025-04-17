@@ -75,7 +75,7 @@ app.post('/action', async (c: Context<HonoContext>) => {
     return c.json({
         success: true,
         code: 'OK',
-        message: `Action "${action}" sent to device.`,
+        message: `Action successfully sent to device.`,
     });
 });
 
