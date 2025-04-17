@@ -26,7 +26,9 @@ async function main() {
             await pool.end();
             return;
         }
+    } catch { return; }
 
+    try {
         await migrate(db, { migrationsFolder: './drizzle' });
 
         logger.info('Database migration completed successfully.');
@@ -34,6 +36,7 @@ async function main() {
         await pool.end();
     } catch (error) {
         logger.error('Checks error. database might be still booting up, retries in 5 seconds...');
+        console.error(error);
         await new Promise(resolve => setTimeout(resolve, 5000));
         restart = true; main(); return;
     }
