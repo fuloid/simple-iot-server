@@ -20,7 +20,8 @@ async function main() {
         // Check if migrations are already applied
         const { rowCount } = await pool.query(`
             SELECT EXISTS (
-                SELECT 1 FROM pg_tables 
+            SELECT 1 FROM pg_tables 
+            WHERE tablename IN ('activity_logs', 'devices')
             );
         `);
 
