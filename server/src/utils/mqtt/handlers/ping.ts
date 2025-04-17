@@ -21,6 +21,7 @@ export default function register(client: MqttClient, logger: Logger) {
     setInterval(() => pingDevice(client, logger), 15 * 1000);
 
     client.on('message', (topic, message) => {
+        console.log(topic, message.toString());
         if (topic === "device/ping") {
             try {
                 if (message.toString() != "pong") return;
