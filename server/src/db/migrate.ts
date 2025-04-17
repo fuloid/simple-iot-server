@@ -18,12 +18,7 @@ async function main() {
 
     try {
         // Check if migrations are already applied
-        const { rowCount } = await pool.query(`
-            SELECT EXISTS (
-            SELECT 1 FROM pg_tables 
-            WHERE tablename IN ('activity_logs', 'devices')
-            );
-        `);
+        const { rowCount } = await pool.query('SELECT 1 FROM _drizzle_migrations LIMIT 1;');
 
         if (rowCount && rowCount > 0) {
             logger.info('Found existing migrations. Skipped, bye!');
