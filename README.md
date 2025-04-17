@@ -9,7 +9,7 @@ This server are only intended for testing and development. I do not recommend to
 
 And btw, if you interested in the complex version one, why not check branch `hardcore`?
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/3Jbbxj?referralCode=4iJO-9)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/B379Yz?referralCode=4iJO-9)
 
 - There's some important step to look before you deploy. Please check them first. ([here](#hosting))
 
