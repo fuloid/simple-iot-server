@@ -3,7 +3,6 @@ import { Hono, type Context } from 'hono';
 import { Database } from '@/utils/database';
 import { createLogger } from '@/utils/logger';
 import type { HonoContext } from '@/server';
-import { ping } from '@/utils/mqtt/handlers/ping';
 import client from '@/utils/mqtt';
 
 const app = new Hono();
@@ -18,11 +17,6 @@ const actions = [
 app.get('/online', async (c: Context<HonoContext>) => {
     let { last_ping } = await Database.getDevice();
     let online = (last_ping && (Date.now() - new Date(last_ping).getTime()) < 30000) || false;
-
-    if (!online) {
-        online = await ping();
-        if (online) last_ping = new Date();
-    }
 
     return c.json({
         success: true,

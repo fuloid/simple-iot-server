@@ -3,25 +3,12 @@ import type { MqttClient } from 'mqtt';
 import type { Logger } from 'pino';
 
 export const name = 'ping';
-export var ping: () => Promise<boolean>; // Placeholder for ping function
 let pingCache: { lastPing: number, attempt: number } = { lastPing: 0, attempt: 0 };
 
 export default function register(client: MqttClient, logger: Logger) {
-
-    // this function will ping devices that has not been pinging again after 15 seconds
-    ping = async () => {
-        client.publish(`device/ping`, 'ping', { qos: 1, retain: true });
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        const { lastPing } = pingCache;
-
-        // check if last ping is less than a second ago
-        if (Date.now() - lastPing < 2000) return true;
-        return false;
-    };
     setInterval(() => pingDevice(client, logger), 15 * 1000);
 
     client.on('message', (topic, message) => {
-        console.log(topic, message.toString());
         if (topic === "device/ping") {
             try {
                 if (message.toString() != "pong") return;
