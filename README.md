@@ -82,10 +82,13 @@ Common possible output:
 - `message`: **Message / Explanation**
 - `success`: **Response success `(true/false)`**
 
+For MQTT, this may vary depending on which topic it is sent to.
+
 ### Authentication
 
 #### User / Application
-For API server, please use `Authorization` header, with basic auth (base64 data of `<username>:<password>`)
+For API server, please use `Authorization` header, with basic auth (base64 data of `<username>:<password>`)<br>
+Example header: `Authorization: Basic abcdef123`
 
 For MQTT server, use that credential directly as username and password to login.
 
@@ -97,6 +100,53 @@ For MQTT server, use that credential directly as username and password to login.
 
 Username: provided in env `DEV_USERNAME`<br>
 Password: provided in env `DEV_PASSWORD`
+
+### API Server endpoints
+
+Note: API server endpoints are only meant to be accessed by user/app. For device, please use mqtt instead.
+
+- `GET /api/online`: Get device online status<br>
+Example output:
+```json
+{
+    "success": true,
+    "code": "OK",
+    "message": "Device is online.",
+    "data": {
+        "online": true,
+        "last_ping": "2025-04-18T00:13:16.039Z"
+    }
+}
+```
+- `GET /api/sensors`: Get current/cached sensors data<br>
+Example output:
+```json
+{
+    "success": true,
+    "code": "OK",
+    "message": "Sensor data retrieved successfully.",
+    "data": {
+        "air_temp": 30.2,
+        "humidity": 64,
+        "food_level": 24,
+        "water_temp": 25.5,
+        "water_level": 93,
+        "water_acidity": 7.5,
+        "water_turbidity": 0.8
+    }
+}
+```
+- `POST /api/action`: Send device an action to do<br>
+Param input (application/json): `{ "action": "..." }`<br>
+Valid action: `food_refill`,`water_refill`,`water_drain`<br>
+Example output:
+```json
+{
+    "success": true,
+    "code": "OK",
+    "message": "Action successfully sent to device."
+}
+```
 
 ### MQTT Topics
 
