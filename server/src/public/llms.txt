@@ -8,7 +8,7 @@
 > For API endpoints, docs, requirement etc, please refer to this link:
 
 > openapi.json: https://{{url}}/docs/openapi.json
-> Human readable: https://{{url}}/docs
+> Human readable (swagger): https://{{url}}/docs
 
 > In summary:
 > - `GET /api/login`
