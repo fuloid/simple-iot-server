@@ -1,14 +1,5 @@
 import { z } from "@hono/zod-openapi";
 
-export const Headers = z.object({
-    authorization: z.string().refine((value) => {
-        return value.startsWith('Basic ') && value.length > 6;
-    }).openapi('AuthorizationHeader', {
-        description: 'Basic authentication header.',
-        example: 'Basic dXNlcjpwYXNzd29yZA=='
-    })
-});
-
 export const Response200 = z.object({
     success: z.literal(true),
     code: z.literal('OK'),

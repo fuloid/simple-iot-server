@@ -5,9 +5,11 @@ import * as OnlineSchema from '@/types/api/schema/online'
 export const route = createRoute({
     method: 'get',
     path: '/api/online',
-    request: {
-        headers: Scheme.Headers
-    },
+    security: [
+        {
+            'Basic Auth': []
+        }
+    ],
     responses: {
         200: {
             description: 'Device online status received.',

@@ -62,7 +62,7 @@ app.route('/mqtt', mqtt);
 app.route('/api', api);
 
 // Expose openapi spec
-app.openAPIRegistry.registerComponent('securitySchemes', 'BasicAuth', {
+app.openAPIRegistry.registerComponent('securitySchemes', 'Basic Auth', {
     type: 'http',
     scheme: 'basic',
     description: 'Basic authentication for all endpoints.',
@@ -83,7 +83,7 @@ app.doc('/docs/openapi.json', {
             url: `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`,
             description: 'Current server',
         }
-    ],
+    ]
 });
 app.get('/docs', swaggerUI({
     url: '/docs/openapi.json',

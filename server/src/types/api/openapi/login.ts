@@ -4,9 +4,11 @@ import * as Scheme from '@/types/api/schema'
 export const route = createRoute({
     method: 'get',
     path: '/api/login',
-    request: {
-        headers: Scheme.Headers
-    },
+    security: [
+        {
+            'Basic Auth': []
+        }
+    ],
     responses: {
         200: {
             description: 'Login successful.',

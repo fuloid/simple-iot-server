@@ -6,7 +6,6 @@ export const route = createRoute({
     method: 'get',
     path: '/api/sensors',
     request: {
-        headers: Scheme.Headers,
         body: {
             content: {
                 'application/json': {
@@ -15,6 +14,11 @@ export const route = createRoute({
             }
         }
     },
+    security: [
+        {
+            'Basic Auth': []
+        }
+    ],
     responses: {
         200: {
             description: 'Action sent successfully.',

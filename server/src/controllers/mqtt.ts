@@ -45,7 +45,7 @@ app.post('/auth', async (c: Context<HonoContext>) => {
         // Auth check if user/device valid
         const user = username.toLowerCase();
         if (user === process.env.APP_USERNAME && password === process.env.APP_PASSWORD) {
-            logger.info('User authentication successful.');
+            logger.info('Basic Authentication successful.');
             const acl = [
                 { permission: 'allow', action: 'subscribe', topic: `device/ping` },
                 { permission: 'allow', action: 'subscribe', topic: `device/remote` },
