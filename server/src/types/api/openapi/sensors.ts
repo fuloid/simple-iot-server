@@ -4,7 +4,7 @@ import * as SensorSchema from '@/types/api/schema/sensors'
 
 export const route = createRoute({
     method: 'get',
-    path: '/api/sensors',
+    path: '/sensors',
     security: [
         {
             'Basic Auth': []

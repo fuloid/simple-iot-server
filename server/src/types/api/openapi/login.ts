@@ -3,7 +3,7 @@ import * as Scheme from '@/types/api/schema'
 
 export const route = createRoute({
     method: 'get',
-    path: '/api/login',
+    path: '/login',
     security: [
         {
             'Basic Auth': []

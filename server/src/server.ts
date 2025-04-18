@@ -65,7 +65,7 @@ app.route('/api', api);
 app.openAPIRegistry.registerComponent('securitySchemes', 'Basic Auth', {
     type: 'http',
     scheme: 'basic',
-    description: 'Basic authentication for all endpoints.',
+    description: 'Basic authentication for all endpoints. Use user/app credentials to login.',
 });
 app.doc('/docs/openapi.json', {
     openapi: '3.0.0',

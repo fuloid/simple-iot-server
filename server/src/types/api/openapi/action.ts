@@ -4,7 +4,7 @@ import * as ActionSchema from '@/types/api/schema/action'
 
 export const route = createRoute({
     method: 'get',
-    path: '/api/sensors',
+    path: '/sensors',
     request: {
         body: {
             content: {

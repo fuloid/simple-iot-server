@@ -4,7 +4,7 @@ import * as OnlineSchema from '@/types/api/schema/online'
 
 export const route = createRoute({
     method: 'get',
-    path: '/api/online',
+    path: '/online',
     security: [
         {
             'Basic Auth': []
