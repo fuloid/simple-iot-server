@@ -1,42 +1,45 @@
 # Simple IoT Server
 
-> Simple IoT Server is a lightweight IoT server implementation for managing and monitoring smart devices with MQTT support. Made by Realzzy
+> Simple IoT Server is a lightweight IoT server implementation for managing and monitoring smart device (one device only) with MQTT support. Made by Realzzy
+
 > Github Repository: https://github.com/fuloid/simple-iot-server
 
 # OpenAPI Spec File
+> For API endpoints, docs, requirement etc, please refer to this link:
+
 > openapi.json: https://{{url}}/docs/openapi.json
 
+> In summary:
+> - `GET /api/login`
+> - `GET /api/online`
+> - `GET /api/sensors`
+> - `POST /api/action`
+
 # Server Context:
-- This is a Simple IoT Server (SM-S) for managing smart devices
+- This is a Simple IoT Server (SM-S) for managing smart device (one device only)
 - Built with Bun + Hono for API and EMQX for MQTT
-- Supports master-agent device architecture
 - Uses PostgreSQL with Drizzle ORM for data persistence
 - Features structured logging with Pino
 
 # Key Components:
 1. Authentication System
-   - JWT-based device authentication
    - Basic auth for application access
-   - MQTT credentials for device communication
+   - MQTT credentials for device communication & application realtime data needs
 
-2. Device Types
-   - Master: Controller devices that manage agents
-   - Agent: Sensor/actuator devices that report to masters
-
-3. Data Structure
+2. Data Structure
    - Sensors: water_temp, water_acidity, water_turbidity, water_level, air_temp, humidity, food_level
    - Actions: food_refill, water_refill, water_drain
    - Device status: online/offline tracking with ping system
 
-4. Communication Patterns
-   - REST API: For application interactions
-   - MQTT: For device communication
+3. Communication Patterns
+   - REST API: For application interactions. See https://{{url}}/docs/openapi.json
+   - MQTT: For device communication & application realtime data needs
    - Structured logging: For system monitoring
 
 5. Security Features
    - Rate limiting
-   - Token-based auth
-   - Access control per device type
+   - Basic auth using username & password for easier use.
+   - With access control for both device and application
    - Secure MQTT channels
 
 # Development Notes:
