@@ -64,7 +64,7 @@ app.route('/api', api);
 // Serve llms.txt
 app.get('/llms.txt', async (c: Context<HonoContext>) => {
     // read the file from "public/llms.txt"
-    const file = await Bun.file('public/llms.txt').text();
+    const file = await Bun.file('dist/public/llms.txt').text();
     return c.text(file.replace('{{url}}', process.env.RAILWAY_PUBLIC_DOMAIN as string), 200, {
         'Content-Type': 'text/plain',
         'Content-Disposition': 'inline; filename="llms.txt"',
