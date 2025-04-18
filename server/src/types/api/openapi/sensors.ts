@@ -5,6 +5,9 @@ import * as SensorSchema from '@/types/api/schema/sensors'
 export const route = createRoute({
     method: 'get',
     path: '/sensors',
+    tags: ['Device'],
+    summary: 'Sensor Data',
+    description: 'Retrieve current/cached sensor data from the device.',
     security: [
         {
             'Basic Auth': []

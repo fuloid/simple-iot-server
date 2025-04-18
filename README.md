@@ -57,11 +57,17 @@ This is an IoT server that provides:
    - `DEBUG`: Set to "true" for debug logging (optional)
 3. ⚠️ **Important!!** <br>After first time deploy, you must set the EMQX gateway (http) domain in order for Backend be able to access the EMQX API or the **Backend server might crash**.<br><br>Go to the `EMQX` service >> `Settings` >> `Networking` then add domain for API gateway (generate or use custom domain), then **redeploy** the Backend service.
 
-## ♾️ Arduino Client Lib (ESP8266)
+## ♾️ Arduino Client Lib (ESP32)
 
 A library for esp32 is available at `arduino_client/esp32` folder, including example. Currently it's untested and may contains bug or unexpected error, so be careful!
 
 To use the library, please make sure both `SMServer.h` and `SMServer.cpp` is imported to your project folder, and install `PubSubClient` from Arduino library.
+
+## 🤖 Ask Chatgpt
+```yaml
+Processing prompt..... (Done)
+Generating output... (/)
+```
 
 ## 🌐 Endpoints
 
@@ -103,8 +109,18 @@ Password: provided in env `DEV_PASSWORD`
 
 ### API Server endpoints
 
+To test the server endpoints, check `/docs` on your backend api server url.<br>
 Note: API server endpoints are only meant to be accessed by user/app. For device, please use mqtt instead.
 
+- `GET /api/login`: Check if login is correct<br>
+Example output:
+```json
+{
+    "success": true,
+    "code": "OK",
+    "message": "Login successful."
+}
+```
 - `GET /api/online`: Get device online status<br>
 Example output:
 ```json

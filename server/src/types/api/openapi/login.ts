@@ -4,6 +4,9 @@ import * as Scheme from '@/types/api/schema'
 export const route = createRoute({
     method: 'get',
     path: '/login',
+    tags: ['Authentication'],
+    summary: 'User Login',
+    description: 'Check if the current credentials are valid.',
     security: [
         {
             'Basic Auth': []

@@ -1,0 +1,54 @@
+# Simple IoT Server
+
+> Simple IoT Server is a lightweight IoT server implementation for managing and monitoring smart devices with MQTT support. Made by Realzzy
+> Github Repository: https://github.com/fuloid/simple-iot-server
+
+# OpenAPI Spec File
+> openapi.json: https://{{url}}/docs/openapi.json
+
+# Server Context:
+- This is a Simple IoT Server (SM-S) for managing smart devices
+- Built with Bun + Hono for API and EMQX for MQTT
+- Supports master-agent device architecture
+- Uses PostgreSQL with Drizzle ORM for data persistence
+- Features structured logging with Pino
+
+# Key Components:
+1. Authentication System
+   - JWT-based device authentication
+   - Basic auth for application access
+   - MQTT credentials for device communication
+
+2. Device Types
+   - Master: Controller devices that manage agents
+   - Agent: Sensor/actuator devices that report to masters
+
+3. Data Structure
+   - Sensors: water_temp, water_acidity, water_turbidity, water_level, air_temp, humidity, food_level
+   - Actions: food_refill, water_refill, water_drain
+   - Device status: online/offline tracking with ping system
+
+4. Communication Patterns
+   - REST API: For application interactions
+   - MQTT: For device communication
+   - Structured logging: For system monitoring
+
+5. Security Features
+   - Rate limiting
+   - Token-based auth
+   - Access control per device type
+   - Secure MQTT channels
+
+# Development Notes:
+- This is a development/testing server
+- Not recommended for production use
+- Contains example implementations
+- Includes Arduino ESP32 client library
+- Railway deployment ready
+
+# Reference Links:
+- Bun: https://bun.sh
+- Hono: https://hono.dev
+- EMQX: https://www.emqx.io
+- Drizzle: https://orm.drizzle.team
+- Railway: https://railway.app

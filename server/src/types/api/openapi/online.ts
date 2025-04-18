@@ -5,6 +5,9 @@ import * as OnlineSchema from '@/types/api/schema/online'
 export const route = createRoute({
     method: 'get',
     path: '/online',
+    tags: ['Device'],
+    summary: 'Device Online Status',
+    description: 'Check if the device is online/offline, with last ping time.',
     security: [
         {
             'Basic Auth': []
