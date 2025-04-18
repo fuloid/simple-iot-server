@@ -61,7 +61,7 @@ This is an IoT server that provides:
 
 A library for esp32 is available at `arduino_client/esp32` folder, including example. Currently it's untested and may contains bug or unexpected error, so be careful!
 
-To use the library, please make sure both `KV` and `SMServer` is imported to your project, and install `PubSubClient` from Arduino library.
+To use the library, please make sure both `SMServer.h` and `SMServer.cpp` is imported to your project folder, and install `PubSubClient` from Arduino library.
 
 ## 🌐 Endpoints
 
