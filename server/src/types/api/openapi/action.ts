@@ -3,8 +3,8 @@ import * as Scheme from '@/types/api/schema'
 import * as ActionSchema from '@/types/api/schema/action'
 
 export const route = createRoute({
-    method: 'get',
-    path: '/sensors',
+    method: 'post',
+    path: '/action',
     tags: ['Device'],
     summary: 'Send Action',
     description: 'Send an action to the device. The action can be one of the following: food_refill, water_refill, water_drain.',

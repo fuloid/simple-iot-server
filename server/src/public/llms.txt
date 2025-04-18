@@ -8,12 +8,14 @@
 > For API endpoints, docs, requirement etc, please refer to this link:
 
 > openapi.json: https://{{url}}/docs/openapi.json
+> Human readable: https://{{url}}/docs
 
 > In summary:
 > - `GET /api/login`
 > - `GET /api/online`
 > - `GET /api/sensors`
 > - `POST /api/action`
+> - Only 4 endpoints in total
 
 # Server Context:
 - This is a Simple IoT Server (SM-S) for managing smart device (one device only)
