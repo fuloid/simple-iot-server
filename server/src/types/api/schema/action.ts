@@ -2,11 +2,11 @@ import { z } from '@hono/zod-openapi';
 import * as Scheme from '@/types/api/schema';
 
 export const Body = z.object({
-    action: z.enum(['food_refill', 'water_refill', 'water_drain'])
+    action: z.enum(['water_refill', 'water_drain'])
 }).openapi('ActionParams', {
     description: 'Action to be performed by the device',
     example: {
-        action: 'food_refill'
+        action: 'water_refill'
     }
 });
 export type Body = z.infer<typeof Body>;

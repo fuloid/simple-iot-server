@@ -8,6 +8,7 @@ import mqtt from '@/controllers/mqtt';
 import api from '@/controllers/api';
 import { connectMQTT } from './utils/mqtt';
 import { swaggerUI } from '@hono/swagger-ui';
+import { createLogger } from './utils/logger';
 
 export type HonoContext = { 
     Variables: { 
@@ -99,6 +100,17 @@ app.get('/docs', swaggerUI({
     url: '/docs/openapi.json',
     title: 'Simple IoT server endpoints'
 }));
+
+// Send current env for connection password
+// make the value from "password" to "pas****d"
+createLogger('Server').info(`
+    -------------------------------------------------------
+      App username: ${process.env.APP_USERNAME}
+      App password: ${(process.env.APP_PASSWORD ?? "No password").replace(/.(?=.{4})/g, '*')}
+      Device username: ${process.env.DEV_USERNAME}
+      Device password: ${(process.env.DEV_PASSWORD ?? "No password").replace(/.(?=.{4})/g, '*')}
+    -------------------------------------------------------
+`);
 
 // Initialize mqtt client
 connectMQTT();
