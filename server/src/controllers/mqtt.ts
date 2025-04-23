@@ -78,6 +78,11 @@ app.post('/auth', async (c: Context<HonoContext>) => {
         
         } else {
             logger.debug('Invalid connection.');
+            logger.debug('No matching username/password found.\n',
+                `Username: ${username} - ${process.env.APP_USERNAME} - ${process.env.DEV_USERNAME}\n`,
+                `Password: ${password} - ${process.env.APP_PASSWORD} - ${process.env.DEV_PASSWORD}\n`,
+                `Client ID: ${clientid}`
+            );
             return c.json({ result: 'deny' });
         }
 
