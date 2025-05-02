@@ -1,7 +1,7 @@
 // --- controllers/mqtt.ts ---
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { type Context } from 'hono';
-import { Database } from '@/utils/database';
+import Database from '@/utils/database';
 import { createLogger } from '@/utils/logger';
 import type { HonoContext } from '@/server';
 import { getClient } from '@/utils/mqtt';
@@ -9,16 +9,13 @@ import { getClient } from '@/utils/mqtt';
 import LoginRoute from '@/types/api/openapi/login';
 import OnlineRoute from '@/types/api/openapi/online';
 import SensorsRoute from '@/types/api/openapi/sensors';
-import ActionRoute from '@/types/api/openapi/action';
+import { getRoute as ActionGetRoute, postRoute as ActionPostRoute } from '@/types/api/openapi/action';
+import actions from '@/types/api/schema/actions';
 
 const app = new OpenAPIHono();
 const logger = createLogger('API');
 
-const actions = [
-    'food_refill',
-    'water_refill',
-    'water_drain'
-];
+export let lastAction: number | null = null;
 
 // @ts-expect-error
 app.openapi(LoginRoute, async (c: Context<HonoContext>) => {
@@ -32,7 +29,7 @@ app.openapi(LoginRoute, async (c: Context<HonoContext>) => {
 // @ts-expect-error
 app.openapi(OnlineRoute, async (c: Context<HonoContext>) => {
     try {
-        let { last_ping } = await Database.getDevice();
+        let { last_ping } = await Database.Device.getDevice();
         let online = (last_ping && (Date.now() - new Date(last_ping).getTime()) < 30000) || false;
 
         return c.json({
@@ -57,7 +54,7 @@ app.openapi(OnlineRoute, async (c: Context<HonoContext>) => {
 // @ts-expect-error
 app.openapi(SensorsRoute, async (c: Context<HonoContext>) => {
     try {
-        const { cache_data } = await Database.getDevice();
+        const { cache_data } = await Database.Device.getDevice();
         if (!cache_data) {
             return c.json({
                 success: false,
@@ -83,10 +80,33 @@ app.openapi(SensorsRoute, async (c: Context<HonoContext>) => {
 });
 
 // @ts-expect-error
-app.openapi(ActionRoute, async (c: Context<HonoContext>) => {
+app.openapi(ActionGetRoute, async (c: Context<HonoContext>) => {
+    const { last_ping } = await Database.Device.getDevice();
+    const online = (last_ping && (Date.now() - new Date(last_ping).getTime()) < 30000) || false;
+    const running = lastAction && (Date.now() - lastAction) < 15e3;
+
+    const finalActions = Object.keys(actions).reduce((acc, key) => {
+        acc[key] = { 
+            ...actions[key], 
+            enabled: online && !running 
+        } as (typeof actions)[keyof typeof actions];
+        return acc;
+    }, {} as typeof actions);
+
+    return c.json({
+        success: true,
+        code: 'OK',
+        message: 'Action list fetched successfully.',
+        data: finalActions
+    }, 200);
+});
+
+// @ts-expect-error
+app.openapi(ActionPostRoute, async (c: Context<HonoContext>) => {
     try {
-        const { action } = await c.req.json() as { action: string, value: any };
-        if (!action || !actions.includes(action)) {
+        let { action } = await c.req.json() as { action: string, value: any };
+        action = action.toLowerCase();
+        if (!action || !(Object.keys(actions)).includes(action) || !actions[action]?.enabled) {
             return c.json({
                 success: false,
                 code: 'INVALID_ACTION',
@@ -94,19 +114,28 @@ app.openapi(ActionRoute, async (c: Context<HonoContext>) => {
             }, 400);
         }
 
-        let { last_ping } = await Database.getDevice();
-        let online = (last_ping && (Date.now() - new Date(last_ping).getTime()) < 30000) || false;
+        const { last_ping } = await Database.Device.getDevice();
+        const online = (last_ping && (Date.now() - new Date(last_ping).getTime()) < 30000) || false;
 
         if (!online) {
+            lastAction = null;
             return c.json({
                 success: false,
-                code: 'DEVICE_OFFLINE',
+                code: 'ACTION_UNAVAILABLE',
                 message: 'Device is offline.',
             }, 503);
         }
 
+        if (lastAction && (Date.now() - lastAction) < 15e3) {
+            return c.json({
+                success: false,
+                code: 'ACTION_UNAVAILABLE',
+                message: 'Another action is still running.',
+            }, 503);
+        }
+
         getClient().publish(`device/remote`, action, { qos: 1, retain: true });
-        Database.addActionLog('user_action', { action });
+        Database.ActivityLog.addActionLog('user_send_action', { action });
         logger.debug(`Action "${action}" sent to device.`);
 
         return c.json({

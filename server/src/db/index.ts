@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
 
-import * as schema from '@/db/schema';
+import schema from '@/db/schema';
 import logger from '@/utils/logger';
 
 if (!process.env.DATABASE_URL) {

@@ -1,6 +1,6 @@
 // --- controllers/mqtt.ts ---
 import { Hono, type Context } from 'hono';
-import { Database } from '@/utils/database';
+import Database from '@/utils/database';
 import { createLogger } from '@/utils/logger';
 import type { HonoContext } from '@/server';
 import { resetAndReattempt } from '@/utils/mqtt';
@@ -32,6 +32,7 @@ app.post('/auth', async (c: Context<HonoContext>) => {
                 { permission: 'allow', action: 'all', topic: `device/ping` },
                 { permission: 'allow', action: 'all', topic: `device/remote` },
                 { permission: 'allow', action: 'all', topic: `device/sensors/+` },
+                { permission: 'allow', action: 'subscribe', topic: `device/init` },
             ];
 
             setTimeout(() => subscribeTopics(clientid, acl), 300);
@@ -42,25 +43,31 @@ app.post('/auth', async (c: Context<HonoContext>) => {
             });
         }
 
+        const ip =
+            c.req.header('x-forwarded-for')?.split(',')[0]?.trim() || // use first IP in chain
+            c.req.header('x-real-ip') ||
+            'unknown';
+
         // Auth check if user/device valid
         const user = username.toLowerCase();
-        if (user === process.env.APP_USERNAME && password === process.env.APP_PASSWORD) {
+        if (user === process.env.APP_USERNAME?.toLowerCase() && password === process.env.APP_PASSWORD) {
             logger.info('Basic Authentication successful.');
             const acl = [
                 { permission: 'allow', action: 'subscribe', topic: `device/ping` },
                 { permission: 'allow', action: 'subscribe', topic: `device/remote` },
                 { permission: 'allow', action: 'subscribe', topic: `device/sensors/+` },
+                { permission: 'allow', action: 'subscribe', topic: `device/init` },
             ];
 
             setTimeout(() => subscribeTopics(clientid, acl), 300);
-            Database.addActionLog('user_auth');
+            Database.ActivityLog.addActionLog('user_auth', { ip });
             return c.json({
                 result: 'allow',
                 expire_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
                 acl
             });
-        
-        } else if (user === process.env.DEV_USERNAME && password === process.env.DEV_PASSWORD) {
+
+        } else if (user === process.env.DEV_USERNAME?.toLowerCase() && password === process.env.DEV_PASSWORD) {
             logger.info('Device authentication successful.');
             const acl = [
                 { permission: 'allow', action: 'all', topic: `device/ping` },
@@ -69,20 +76,16 @@ app.post('/auth', async (c: Context<HonoContext>) => {
             ];
 
             setTimeout(() => subscribeTopics(clientid, acl), 300);
-            Database.addActionLog('device_auth');
+            Database.ActivityLog.addActionLog('device_auth', { ip });
             return c.json({
                 result: 'allow',
                 expire_at: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
                 acl
             });
-        
+
         } else {
             logger.debug('Invalid connection.');
-            logger.debug('No matching username/password found.\n',
-                `Username: ${username} - ${process.env.APP_USERNAME} - ${process.env.DEV_USERNAME}\n`,
-                `Password: ${password} - ${process.env.APP_PASSWORD} - ${process.env.DEV_PASSWORD}\n`,
-                `Client ID: ${clientid}`
-            );
+            logger.debug('No matching username/password found.');
             return c.json({ result: 'deny' });
         }
 

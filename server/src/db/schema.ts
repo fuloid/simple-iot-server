@@ -1,33 +1,8 @@
-import {
-    pgTable,
-    uuid,
-    text,
-    jsonb,
-    timestamp,
-    pgEnum,
-} from 'drizzle-orm/pg-core';
-import type { InferSelectModel } from 'drizzle-orm';
+import * as actionLogs from '@/db/schema/action_logs';
+import * as devices from '@/db/schema/devices';
+import * as configs from '@/db/schema/configs';
+import * as alerts from '@/db/schema/alerts';
+import * as histories from '@/db/schema/histories';
 
-export const actionTypeEnum = pgEnum('action_type', [
-    'device_auth',
-    'user_auth',
-    'user_action',
-]);
-
-export const action_logs = pgTable('action_logs', {
-    id: uuid('id').primaryKey(),
-    type: actionTypeEnum('type').notNull(),
-    metadata: jsonb('metadata'),
-    created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-});
-
-export const devices = pgTable('devices', {
-    id: uuid('id').primaryKey(),
-    last_ping: timestamp('last_ping', { withTimezone: true }),
-    cache_data: jsonb('cache_data'),
-    cache_config: jsonb('cache_config'),
-    updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-});
-
-export type ActionLog = InferSelectModel<typeof action_logs>;
-export type Device = InferSelectModel<typeof devices>;
+export const schema = { ...actionLogs, ...devices, ...configs, ...alerts, ...histories };
+export default schema;

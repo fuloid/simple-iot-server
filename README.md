@@ -12,7 +12,6 @@ And btw, if you interested in the complex version one, why not check branch `har
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/B379Yz?referralCode=4iJO-9)
 
 - There's some important step to look before you deploy. Please check them first. ([here](#hosting))
-- Also, there's a special tutorial on how to ask AI about this project, [here](#ai)!
 
 ## 🤔 What's This?
 
@@ -63,16 +62,6 @@ This is an IoT server that provides:
 A library for esp32 is available at `arduino_client/esp32` folder, including example. Currently it's untested and may contains bug or unexpected error, so be careful!
 
 To use the library, please make sure both `SMServer.h` and `SMServer.cpp` is imported to your project folder, and install `PubSubClient` from Arduino library.
-
-<a name="ai"></a>
-## 🤖 Ask an AI
-To start asking to ai (ex. Chatgpt), first host the project on railway, grab your api server url, then add path `/llms.txt`<br>
-Example: `https://a-backend.up.railway.app/llms.txt`<br>
-What this does, is to make sure the AI fetch the specifically made readme for AI to understand the project.
-
-Then, go to the AI website, enable **Search** if available, paste the url, send, and let it fetch for the first time, to make sure it understand first.
-
-Make sure the AI understand by asking few questions, and you're ready to go!
 
 ## 🌐 Endpoints
 

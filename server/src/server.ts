@@ -8,7 +8,9 @@ import mqtt from '@/controllers/mqtt';
 import api from '@/controllers/api';
 import { connectMQTT } from './utils/mqtt';
 import { swaggerUI } from '@hono/swagger-ui';
-import { createLogger } from './utils/logger';
+
+// do not change
+const VERSION = '1.0.5';
 
 export type HonoContext = { 
     Variables: { 
@@ -62,21 +64,11 @@ app.use('/api/action', appMiddleware);
 app.route('/mqtt', mqtt);
 app.route('/api', api);
 
-// Serve llms.txt
-app.get('/llms.txt', async (c: Context<HonoContext>) => {
-    // read the file from "public/llms.txt"
-    const file = await Bun.file('dist/public/llms.txt').text();
-    return c.text(file.replaceAll('{{url}}', process.env.RAILWAY_PUBLIC_DOMAIN as string), 200, {
-        'Content-Type': 'text/plain',
-        'Content-Disposition': 'inline; filename="llms.txt"',
-    });
-});
-
 // Expose openapi spec
 app.openAPIRegistry.registerComponent('securitySchemes', 'Basic Auth', {
     type: 'http',
     scheme: 'basic',
-    description: 'Basic authentication for all endpoints. Use user/app credentials to login.',
+    description: 'Basic authentication for all endpoints. Use app credentials to login.',
 });
 app.doc('/docs/openapi.json', {
     openapi: '3.0.0',
@@ -91,8 +83,8 @@ app.doc('/docs/openapi.json', {
     },
     servers: [
         {
-            url: `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`,
-            description: 'Current server',
+            url: `https://${process.env.RAILWAY_PUBLIC_DOMAIN || process.env.HOST || 'localhost'}`,
+            description: `Current server - v${VERSION}`,
         }
     ]
 });
@@ -101,16 +93,11 @@ app.get('/docs', swaggerUI({
     title: 'Simple IoT server endpoints'
 }));
 
-// Send current env for connection password
-// make the value from "password" to "pas****d"
-createLogger('Server').info(`
-    -------------------------------------------------------
-      App username: ${process.env.APP_USERNAME}
-      App password: ${(process.env.APP_PASSWORD ?? "No password").replace(/.(?=.{4})/g, '*')}
-      Device username: ${process.env.DEV_USERNAME}
-      Device password: ${(process.env.DEV_PASSWORD ?? "No password").replace(/.(?=.{4})/g, '*')}
-    -------------------------------------------------------
-`);
+// Export client version as an added header
+app.use('*', async (c, next) => {
+    c.res.headers.set('X-Server-Version', VERSION);
+    await next();
+});
 
 // Initialize mqtt client
 connectMQTT();

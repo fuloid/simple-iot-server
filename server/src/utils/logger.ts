@@ -7,7 +7,7 @@ export type Logger = pino.Logger & { prefix?: string };
 // make logger log info set debug min level
 const level = (process.env.DEBUG && (process.env.DEBUG).toLowerCase() == "true") ? 'debug' : 'info';
 logger.level = level;
-logger.debug('Logger initialized with level:', level);
+logger.debug(`Logger initialized with level: ${level}`);
 
 export function createLogger(prefix: string, customLogger?: Logger) {
     if (customLogger) {

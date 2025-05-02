@@ -1,21 +1,24 @@
 import { createRoute } from '@hono/zod-openapi'
 import * as Scheme from '@/types/api/schema'
-import * as SensorSchema from '@/types/api/schema/sensors/get'
+import * as SensorSchema from '@/types/api/schema/sensors/history'
 
 export const route = createRoute({
     method: 'get',
-    path: '/sensors',
+    path: '/sensors/history',
     tags: ['Device'],
-    summary: 'Sensor Data',
-    description: 'Retrieve current/cached sensor data from the device.',
+    summary: 'Sensor Data History',
+    description: 'Retrieve history of cached sensor data from the device.',
     security: [
         {
             'Basic Auth': []
         }
     ],
+    request: {
+        query: SensorSchema.Body
+    },
     responses: {
         200: {
-            description: 'Sensor data received.',
+            description: 'Sensor data history received.',
             content: {
                 'application/json': {
                     schema: SensorSchema.Response200

@@ -1,13 +1,15 @@
 import { z } from '@hono/zod-openapi';
 import * as Scheme from '@/types/api/schema';
+import { actions } from '.';
 
 export const Body = z.object({
-    action: z.enum(['water_refill', 'water_drain'])
+    action: z.enum(Object.keys(actions) as [keyof typeof actions]),
 }).openapi('ActionParams', {
     description: 'Action to be performed by the device',
     example: {
         action: 'water_refill'
-    }
+    },
+    required: ['action'],
 });
 export type Body = z.infer<typeof Body>;
 
@@ -23,15 +25,22 @@ export const Response200 = Scheme.Response200
 
 export const Response503 = z.object({
     success: z.literal(false),
-    code: z.literal('DEVICE_OFFLINE'),
+    code: z.literal('ACTION_UNAVAILABLE'),
     message: z.string()
-}).openapi('DeviceOfflineResponse', {
-    description: 'Action execution failed due to device offline.',
-    example: {
-        success: false,
-        code: 'DEVICE_OFFLINE',
-        message: 'Device is offline.'
-    }
+}).openapi('DeviceUnavailableResponse', {
+    description: 'Action execution failed due to device offline or another action is still running.',
+    examples: [
+        {
+            success: false,
+            code: 'ACTION_UNAVAILABLE',
+            message: 'Device is offline.'
+        },
+        {
+            success: false,
+            code: 'ACTION_UNAVAILABLE',
+            message: 'Another action is still running.'
+        }
+    ]
 });
 export type Response503 = z.infer<typeof Response503>;
 

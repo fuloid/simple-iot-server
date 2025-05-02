@@ -1,4 +1,4 @@
-import { Database } from '@/utils/database';
+import Database from '@/utils/database';
 import type { MqttClient } from 'mqtt';
 import type { Logger } from 'pino';
 
@@ -16,7 +16,7 @@ export default function register(client: MqttClient, logger: Logger) {
 
                 // Update last ping time in the database
                 pingCache = { lastPing: Date.now(), attempt: 0 };
-                Database.updateDevicePing();
+                Database.Device.updateDevicePing();
             } catch (err) {
                 logger.error('Error processing ping event:', err);
                 return;

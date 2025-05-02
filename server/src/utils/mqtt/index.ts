@@ -24,6 +24,12 @@ function calculateReconnectDelay(attempts: number): number {
 export async function connectMQTT() {
 
     if (!connectAttemptReady) {
+        if (!process.env.MQTT_WEB_HOST || process.env.MQTT_WEB_HOST === '') {
+            logger.error('MQTT_WEB_HOST is not set. Please set it to your MQTT web host.');
+            logger.error('Server will exit...');
+            process.exit(1);
+        }
+
         logger.info('Checking MQTT health status...')
         const response = await fetch(`https://${process.env.MQTT_WEB_HOST}/api/v5/status`);
 

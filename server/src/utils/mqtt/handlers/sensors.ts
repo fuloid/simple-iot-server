@@ -1,4 +1,5 @@
-import { Database, type Sensors } from '@/utils/database';
+import type { Sensors } from '@/types/database/device';
+import Database from '@/utils/database';
 import type { MqttClient } from 'mqtt';
 import type { Logger } from 'pino';
 
@@ -18,7 +19,7 @@ export default function register(client: MqttClient, logger: Logger) {
                 logger.debug(`Received sensor data "${name}" from device.`);
 
                 // Update cache data in the database
-                Database.updateDeviceSensor(name, value);
+                Database.Device.updateDeviceSensor(name, value);
             } catch (err) {
                 logger.error('Error processing sensor event:', err);
                 return;
